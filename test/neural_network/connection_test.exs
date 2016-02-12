@@ -15,7 +15,6 @@ defmodule NeuralNetwork.ConnectionTest do
     assert connection.source == %{}
     assert connection.target == %{}
     assert connection.weight == 0.4
-    NeuralNetwork.Connection.stop(:one)
   end
 
   test "update connection values" do
@@ -26,8 +25,6 @@ defmodule NeuralNetwork.ConnectionTest do
     connection = NeuralNetwork.Connection.get(:one)
     assert connection.source.input == 10
     assert connection.target.input == 5
-
-    NeuralNetwork.Connection.stop(:one)
   end
 
   test "create a connection for two neurons" do

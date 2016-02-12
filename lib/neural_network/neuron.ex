@@ -11,6 +11,14 @@ defmodule NeuralNetwork.Neuron do
     Agent.start_link(fn -> %NeuralNetwork.Neuron{} end, name: name)
   end
 
+  def start_link(name, neuron_fields) do
+    Agent.start_link(fn -> Map.merge(%NeuralNetwork.Neuron{}, neuron_fields) end, name: name)
+  end
+
+  def update(name, neuron_fields) do
+    Agent.update(name, fn neuron -> Map.merge(neuron, neuron_fields) end)
+  end
+
   def get(name) do
     Agent.get(name, &(&1))
   end
