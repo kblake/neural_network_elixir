@@ -33,4 +33,16 @@ defmodule NeuralNetwork.ConnectionTest do
 
     NeuralNetwork.Connection.stop(:one)
   end
+
+  test "create a connection for two neurons" do
+    NeuralNetwork.Neuron.start_link(:neuronA)
+    neuronA = NeuralNetwork.Neuron.start_link(:neuronA)
+    NeuralNetwork.Neuron.start_link(:neuronB)
+    neuronB = NeuralNetwork.Neuron.start_link(:neuronB)
+
+    {:ok, connection} = NeuralNetwork.Connection.connection_for(neuronA, neuronB)
+
+    assert connection.source == neuronA
+    assert connection.target == neuronB
+  end
 end

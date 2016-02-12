@@ -1,5 +1,5 @@
 defmodule NeuralNetwork.NeuronTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
   doctest NeuralNetwork.Neuron
 
   test "has default values" do
