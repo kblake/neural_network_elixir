@@ -20,9 +20,9 @@ defmodule NeuralNetwork.Connection do
   end
 
   def connection_for(source, target) do
-    NeuralNetwork.Connection.start_link(:conn)
-    NeuralNetwork.Connection.update(:conn, :source, source)
-    NeuralNetwork.Connection.update(:conn, :target, target)
-    NeuralNetwork.Connection.get(:conn)
+    NeuralNetwork.Connection.start_link(:connection)
+    NeuralNetwork.Connection.update(:connection, :source, source)
+    NeuralNetwork.Connection.update(:connection, :target, target)
+    NeuralNetwork.Connection.get(:connection)
   end
 end
