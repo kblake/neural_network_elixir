@@ -11,7 +11,7 @@ defmodule NeuralNetwork.Connection do
 
   def update(name, key, value) do
     Agent.update(name, fn connection ->
-      Map.put(%NeuralNetwork.Connection{}, key, value)
+      Map.put(connection, key, value)
     end)
   end
 
@@ -20,6 +20,9 @@ defmodule NeuralNetwork.Connection do
   end
 
   def connection_for(source, target) do
-    {:ok, %NeuralNetwork.Connection{source: source, target: target}}
+    NeuralNetwork.Connection.start_link(:conn)
+    NeuralNetwork.Connection.update(:conn, :source, source)
+    NeuralNetwork.Connection.update(:conn, :target, target)
+    NeuralNetwork.Connection.get(:conn)
   end
 end

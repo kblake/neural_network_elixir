@@ -22,13 +22,9 @@ defmodule NeuralNetwork.ConnectionTest do
     NeuralNetwork.Connection.start_link(:one)
 
     NeuralNetwork.Connection.update(:one, :source, %NeuralNetwork.Neuron{input: 10})
-    connection = NeuralNetwork.Connection.get(:one)
-    assert is_map(connection.source)
-    assert connection.source.input == 10
-
     NeuralNetwork.Connection.update(:one, :target, %NeuralNetwork.Neuron{input: 5})
     connection = NeuralNetwork.Connection.get(:one)
-    assert is_map(connection.target)
+    assert connection.source.input == 10
     assert connection.target.input == 5
 
     NeuralNetwork.Connection.stop(:one)
@@ -36,11 +32,11 @@ defmodule NeuralNetwork.ConnectionTest do
 
   test "create a connection for two neurons" do
     NeuralNetwork.Neuron.start_link(:neuronA)
-    neuronA = NeuralNetwork.Neuron.start_link(:neuronA)
+    neuronA = NeuralNetwork.Neuron.get(:neuronA)
     NeuralNetwork.Neuron.start_link(:neuronB)
-    neuronB = NeuralNetwork.Neuron.start_link(:neuronB)
+    neuronB = NeuralNetwork.Neuron.get(:neuronB)
 
-    {:ok, connection} = NeuralNetwork.Connection.connection_for(neuronA, neuronB)
+    connection = NeuralNetwork.Connection.connection_for(neuronA, neuronB)
 
     assert connection.source == neuronA
     assert connection.target == neuronB
