@@ -4,6 +4,7 @@ defmodule NeuralNetwork.NeuronTest do
 
   test "has default values" do
     neuron = %NeuralNetwork.Neuron{}
+    assert neuron.name      == ""
     assert neuron.input     == 0
     assert neuron.output    == 0
     assert neuron.incoming  == []
@@ -14,6 +15,7 @@ defmodule NeuralNetwork.NeuronTest do
   test "has default values as an agent" do
     NeuralNetwork.Neuron.start_link(%{name: :one})
     neuron = NeuralNetwork.Neuron.get(:one)
+    assert neuron.name      == :one
     assert neuron.input     == 0
     assert neuron.output    == 0
     assert neuron.incoming  == []
@@ -24,6 +26,7 @@ defmodule NeuralNetwork.NeuronTest do
   test "has values passed in as an agent" do
     NeuralNetwork.Neuron.start_link(%{name: :one, input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true})
     neuron = NeuralNetwork.Neuron.get(:one)
+    assert neuron.name      == :one
     assert neuron.input     == 1
     assert neuron.output    == 2
     assert neuron.incoming  == [1]

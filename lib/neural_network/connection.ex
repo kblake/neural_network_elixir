@@ -1,14 +1,14 @@
 defmodule NeuralNetwork.Connection do
-  defstruct source: %{}, target: %{}, weight: 0.4 # make weight random at some point
+  defstruct name: "", source: %{}, target: %{}, weight: 0.4 # make weight random at some point
 
-  def start_link(name) do
-    Agent.start_link(fn -> %NeuralNetwork.Connection{} end, name: name)
+  def start_link(name_field) do
+    Agent.start_link(fn -> Map.merge(%NeuralNetwork.Connection{}, name_field) end, name: name_field.name)
   end
 
-  def start_link(name, connection_fields) do
+  def start_link(connection_fields) do
     Agent.start_link(fn ->
       Map.merge(%NeuralNetwork.Connection{}, connection_fields)
-    end, name: name)
+    end, name: connection_fields.name)
   end
 
   def get(name), do: Agent.get(name, &(&1))
@@ -20,7 +20,7 @@ defmodule NeuralNetwork.Connection do
   def stop(name), do: Process.exit(Process.whereis(name), :shutdown)
 
   def connection_for(source, target) do
-    NeuralNetwork.Connection.start_link(:connection)
+    NeuralNetwork.Connection.start_link(%{name: :connection})
     NeuralNetwork.Connection.update(:connection, %{source: source, target: target})
     NeuralNetwork.Connection.get(:connection)
   end
