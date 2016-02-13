@@ -34,9 +34,9 @@ defmodule NeuralNetwork.ConnectionTest do
   end
 
   test "create a connection for two neurons" do
-    NeuralNetwork.Neuron.start_link(:neuronA)
+    NeuralNetwork.Neuron.start_link(%{name: :neuronA})
     neuronA = NeuralNetwork.Neuron.get(:neuronA)
-    NeuralNetwork.Neuron.start_link(:neuronB)
+    NeuralNetwork.Neuron.start_link(%{name: :neuronB})
     neuronB = NeuralNetwork.Neuron.get(:neuronB)
 
     connection = NeuralNetwork.Connection.connection_for(neuronA, neuronB)
