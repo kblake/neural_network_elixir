@@ -1,10 +1,6 @@
 defmodule NeuralNetwork.Connection do
   defstruct name: "", source: %{}, target: %{}, weight: 0.4 # make weight random at some point
 
-  def start_link(name_field) do
-    Agent.start_link(fn -> Map.merge(%NeuralNetwork.Connection{}, name_field) end, name: name_field.name)
-  end
-
   def start_link(connection_fields) do
     Agent.start_link(fn ->
       Map.merge(%NeuralNetwork.Connection{}, connection_fields)

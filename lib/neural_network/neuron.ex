@@ -7,12 +7,10 @@ defmodule NeuralNetwork.Neuron do
     @learning_rate
   end
 
-  def start_link(name_field) do
-    Agent.start_link(fn -> Map.merge(%NeuralNetwork.Neuron{}, name_field) end, name: name_field.name)
-  end
-
   def start_link(neuron_fields) do
-    Agent.start_link(fn -> Map.merge(%NeuralNetwork.Neuron{}, neuron_fields) end, name: neuron_fields.name)
+    Agent.start_link(fn ->
+      Map.merge(%NeuralNetwork.Neuron{}, neuron_fields)
+    end, name: neuron_fields.name)
   end
 
   def update(name, neuron_fields) do
