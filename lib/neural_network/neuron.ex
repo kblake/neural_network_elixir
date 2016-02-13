@@ -17,9 +17,7 @@ defmodule NeuralNetwork.Neuron do
     Agent.update(name, fn neuron -> Map.merge(neuron, neuron_fields) end)
   end
 
-  def get(name) do
-    Agent.get(name, &(&1))
-  end
+  def get(name), do: Agent.get(name, &(&1))
 
   def connect(source, target) do
     connection = NeuralNetwork.Connection.connection_for(source, target)
