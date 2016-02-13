@@ -40,10 +40,13 @@ defmodule NeuralNetwork.Neuron do
 
   def activate(neuron, value \\ nil) do
     if neuron.bias? do
-      %Neuron{neuron | output: 1}
+      Neuron.update(neuron.name, %{output: 1})
     else
       input = value || Enum.reduce(neuron.incoming, 0, sumf)
-      %Neuron{neuron | output: activation_function(input)}
+      Neuron.update(neuron.name, %{output: activation_function(input)})
     end
+
+    # conveniently return updated neuron
+    Neuron.get(neuron.name)
   end
 end

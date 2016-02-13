@@ -1,5 +1,5 @@
 defmodule NeuralNetwork.NeuronTest do
-  alias NeuralNetwork.{Neuron}
+  alias NeuralNetwork.{Neuron, Connection}
   use ExUnit.Case
   doctest Neuron
 
@@ -66,24 +66,29 @@ defmodule NeuralNetwork.NeuronTest do
     assert Neuron.activation_function(1) == 0.7310585786300049
   end
 
-  # test ".activate with specified value" do
-  #   neuron = NeuralNet.Neuron.activate(%NeuralNet.Neuron{}, 1)
-  #   assert neuron.output == 0.7310585786300049
-  # end
+  test ".activate with specified value" do
+    Neuron.start_link(%{name: :a})
+    neuron = Neuron.get(:a)
+    neuron = Neuron.activate(neuron, 1)
+    assert neuron.output == 0.7310585786300049
+  end
 
-  # test ".activate with no incoming connections" do
-  #   neuron = NeuralNet.Neuron.activate(%NeuralNet.Neuron{})
-  #   assert neuron.output == 0.5
-  # end
+  test ".activate with no incoming connections" do
+    Neuron.start_link(%{name: :a})
+    neuron = Neuron.get(:a)
+    neuron = Neuron.activate(neuron)
+    assert neuron.output == 0.5
+  end
 
-  # test ".activate with incoming connections" do
-  #   neuron = %NeuralNet.Neuron{
-  #     incoming: [
-  #       %NeuralNet.Connection{source: %NeuralNet.Neuron{output: 2}},
-  #       %NeuralNet.Connection{source: %NeuralNet.Neuron{output: 5}}
-  #     ]
-  #   }
-  #   neuron = NeuralNet.Neuron.activate(neuron)
-  #   assert neuron.output == 0.9426758241011313
-  # end
+  test ".activate with incoming connections" do
+    Neuron.start_link(%{
+            name: :a,
+            incoming: [
+              %Connection{source: %Neuron{output: 2}},
+              %Connection{source: %Neuron{output: 5}}
+            ]})
+    neuron = Neuron.get(:a)
+    neuron = Neuron.activate(neuron)
+    assert neuron.output == 0.9426758241011313
+  end
 end
