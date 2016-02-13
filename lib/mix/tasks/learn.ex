@@ -54,23 +54,23 @@ defmodule Mix.Tasks.Learn do
   #   end
 
 
-    NeuralNetwork.Neuron.start_link(:a)
-    NeuralNetwork.Neuron.start_link(:b)
+    NeuralNetwork.Neuron.start_link(%{name: :a})
+    NeuralNetwork.Neuron.start_link(%{name: :b})
     neuronA = NeuralNetwork.Neuron.get((:a))
     neuronB = NeuralNetwork.Neuron.get((:b))
 
 
-     {:ok, neuronA, neuronB} = NeuralNet.Neuron.connect(neuronA, neuronB)
-    #  IO.puts List.first(neuronB.incoming).source.output
-    #  IO.puts List.first(neuronB.incoming).weight
+     {:ok, neuronA, neuronB} = NeuralNetwork.Neuron.connect(neuronA, neuronB)
+     # IO.puts List.first(neuronB.incoming).source.output
+     # IO.puts List.first(neuronB.incoming).weight
 
     for i <- 1..1 do
       IO.puts "neuronA activate =============="
-      neuronA = NeuralNet.Neuron.activate(neuronA, 2)
+      neuronA = NeuralNetwork.Neuron.activate(neuronA, 2)
       IO.puts "neuronA output: #{neuronA.output}"
 
       IO.puts "neuronB activate =============="
-      neuronB = NeuralNet.Neuron.activate(neuronB)
+      neuronB = NeuralNetwork.Neuron.activate(neuronB)
 
       # IO.puts "A out: #{neuronA.output}"
       IO.puts "B out: #{neuronB.output}"
