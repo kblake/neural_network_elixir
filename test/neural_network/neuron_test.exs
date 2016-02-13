@@ -87,11 +87,16 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test ".activate with incoming connections" do
+    Neuron.start_link(%{name: :x, output: 2})
+    neuronX = Neuron.get(:x)
+    Neuron.start_link(%{name: :y, output: 5})
+    neuronY = Neuron.get(:y)
+
     Neuron.start_link(%{
             name: :a,
             incoming: [
-              %Connection{source: %Neuron{output: 2}},
-              %Connection{source: %Neuron{output: 5}}
+              %Connection{source: neuronX},
+              %Connection{source: neuronY}
             ]})
     neuron = Neuron.get(:a) |> Neuron.activate
     assert neuron.output == 0.9426758241011313
@@ -101,5 +106,22 @@ defmodule NeuralNetwork.NeuronTest do
     Neuron.start_link(%{name: :a, bias?: true})
     neuron = Neuron.get(:a) |> Neuron.activate
     assert neuron.output == 1
+  end
+
+  test "connect and activate two neurons" do
+    Neuron.start_link(%{name: :a})
+    Neuron.start_link(%{name: :b})
+    neuronA = Neuron.get((:a))
+    neuronB = Neuron.get((:b))
+
+    {:ok, neuronA, neuronB} = Neuron.connect(neuronA, neuronB)
+
+    neuronA = Neuron.activate(neuronA, 2)
+    neuronB = Neuron.activate(neuronB)
+
+    assert neuronA.input  == 2
+    assert neuronA.output == 0.8807970779778823
+    assert neuronB.input  == 0.3523188311911529
+    assert neuronB.output == 0.5871797762705651
   end
 end

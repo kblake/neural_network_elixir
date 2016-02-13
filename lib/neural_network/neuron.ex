@@ -34,7 +34,11 @@ defmodule NeuralNetwork.Neuron do
 
   defp sumf do
     fn(connection, sum) ->
-      sum + connection.source.output * connection.weight
+      #############################
+      # TODO: explore just storing name for incoming and outgoing connections!!
+      ##################################
+      source = Neuron.get(connection.source.name)
+      sum + source.output * connection.weight
     end
   end
 
@@ -43,7 +47,7 @@ defmodule NeuralNetwork.Neuron do
       Neuron.update(neuron.name, %{output: 1})
     else
       input = value || Enum.reduce(neuron.incoming, 0, sumf)
-      Neuron.update(neuron.name, %{output: activation_function(input)})
+      Neuron.update(neuron.name, %{input: input, output: activation_function(input)})
     end
 
     # conveniently return updated neuron
