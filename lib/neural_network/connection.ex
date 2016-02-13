@@ -5,24 +5,23 @@ defmodule NeuralNetwork.Connection do
     Agent.start_link(fn -> %NeuralNetwork.Connection{} end, name: name)
   end
 
-  def get(name) do
-    Agent.get(name, &(&1))
+  def start_link(name, connection_fields) do
+    Agent.start_link(fn ->
+      Map.merge(%NeuralNetwork.Connection{}, connection_fields)
+    end, name: name)
   end
 
-  def update(name, key, value) do
-    Agent.update(name, fn connection ->
-      Map.put(connection, key, value)
-    end)
+  def get(name), do: Agent.get(name, &(&1))
+
+  def update(name, fields) do
+    Agent.update(name, fn connection -> Map.merge(connection, fields) end)
   end
 
-  def stop(name) do
-    Process.exit(Process.whereis(name), :shutdown)
-  end
+  def stop(name), do: Process.exit(Process.whereis(name), :shutdown)
 
   def connection_for(source, target) do
     NeuralNetwork.Connection.start_link(:connection)
-    NeuralNetwork.Connection.update(:connection, :source, source)
-    NeuralNetwork.Connection.update(:connection, :target, target)
+    NeuralNetwork.Connection.update(:connection, %{source: source, target: target})
     NeuralNetwork.Connection.get(:connection)
   end
 end

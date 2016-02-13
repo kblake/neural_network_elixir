@@ -17,11 +17,17 @@ defmodule NeuralNetwork.ConnectionTest do
     assert connection.weight == 0.4
   end
 
+  test "create new connection with custom values" do
+    NeuralNetwork.Connection.start_link(:one, %{source: %{this: "will be a neuron"}, target: %{this: "will be a neuron"}})
+    connection = NeuralNetwork.Connection.get(:one)
+    assert connection.source == %{this: "will be a neuron"}
+    assert connection.target == %{this: "will be a neuron"}
+    assert connection.weight == 0.4
+  end
+
   test "update connection values" do
     NeuralNetwork.Connection.start_link(:one)
-
-    NeuralNetwork.Connection.update(:one, :source, %NeuralNetwork.Neuron{input: 10})
-    NeuralNetwork.Connection.update(:one, :target, %NeuralNetwork.Neuron{input: 5})
+    NeuralNetwork.Connection.update(:one, %{source: %NeuralNetwork.Neuron{input: 10}, target: %NeuralNetwork.Neuron{input: 5} })
     connection = NeuralNetwork.Connection.get(:one)
     assert connection.source.input == 10
     assert connection.target.input == 5
