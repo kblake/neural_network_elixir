@@ -50,6 +50,14 @@ defmodule NeuralNetwork.NeuronTest do
     assert neuron.bias?     == true
   end
 
+  test "bias neuron" do
+    Neuron.start_link(%{name: :b, bias?: true})
+    bias_neuron = Neuron.get(:b)
+    assert bias_neuron.bias?
+    assert bias_neuron.incoming == []
+    assert bias_neuron.outgoing == []
+  end
+
   test ".connect" do
     Neuron.start_link(%{name: :a})
     Neuron.start_link(%{name: :b})
@@ -68,15 +76,13 @@ defmodule NeuralNetwork.NeuronTest do
 
   test ".activate with specified value" do
     Neuron.start_link(%{name: :a})
-    neuron = Neuron.get(:a)
-    neuron = Neuron.activate(neuron, 1)
+    neuron = Neuron.get(:a) |> Neuron.activate(1)
     assert neuron.output == 0.7310585786300049
   end
 
   test ".activate with no incoming connections" do
     Neuron.start_link(%{name: :a})
-    neuron = Neuron.get(:a)
-    neuron = Neuron.activate(neuron)
+    neuron = Neuron.get(:a) |> Neuron.activate
     assert neuron.output == 0.5
   end
 
@@ -87,8 +93,13 @@ defmodule NeuralNetwork.NeuronTest do
               %Connection{source: %Neuron{output: 2}},
               %Connection{source: %Neuron{output: 5}}
             ]})
-    neuron = Neuron.get(:a)
-    neuron = Neuron.activate(neuron)
+    neuron = Neuron.get(:a) |> Neuron.activate
     assert neuron.output == 0.9426758241011313
+  end
+
+  test ".activate a bias neuron" do
+    Neuron.start_link(%{name: :a, bias?: true})
+    neuron = Neuron.get(:a) |> Neuron.activate
+    assert neuron.output == 1
   end
 end
