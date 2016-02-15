@@ -27,7 +27,6 @@ defmodule NeuralNetwork.ConnectionTest do
     Connection.start_link(%{name: :one, source_name: Neuron.get(:a).name, target_name: Neuron.get(:b).name})
     connection = Connection.get(:one)
 
-    IO.inspect connection
     assert connection.source_name == Neuron.get(:a).name
     assert connection.target_name == Neuron.get(:b).name
     assert connection.weight      == 0.4

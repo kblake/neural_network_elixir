@@ -62,11 +62,18 @@ defmodule Mix.Tasks.Learn do
 
     {:ok, neuronA, neuronB} = NeuralNetwork.Neuron.connect(neuronA, neuronB)
 
-    for i <- 1..1 do
-      neuronA = NeuralNetwork.Neuron.activate(neuronA, 2)
-      neuronB = NeuralNetwork.Neuron.activate(neuronB)
-      IO.puts "A out: #{neuronA.output}"
-      IO.puts "B out: #{neuronB.output}"
+    for n <- 0..10000 do
+      neuronA = NeuralNetwork.Neuron.get(neuronA.name) |> NeuralNetwork.Neuron.activate(2)
+      neuronB = NeuralNetwork.Neuron.get(neuronB.name) |> NeuralNetwork.Neuron.activate
+
+      neuronB = neuronB |> NeuralNetwork.Neuron.train(1)
+      neuronA = neuronA |> NeuralNetwork.Neuron.train
+
+      if n == 0 || rem(n, 1000) == 0 do
+        # IO.puts "A out: #{neuronA.output}"
+        # IO.puts "B out: #{NeuralNetwork.Neuron.get(neuronB.name).output}"
+        IO.puts "epoch: #{n} error: #{NeuralNetwork.Neuron.get(neuronB.name).error}"
+      end
     end
 
   end

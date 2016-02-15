@@ -11,6 +11,8 @@ defmodule NeuralNetwork.NeuronTest do
     assert neuron.incoming  == []
     assert neuron.outgoing  == []
     assert neuron.bias?     == false
+    assert neuron.error     == 0
+    assert neuron.delta     == 0
   end
 
   test "has default values as an agent" do
@@ -22,10 +24,12 @@ defmodule NeuralNetwork.NeuronTest do
     assert neuron.incoming  == []
     assert neuron.outgoing  == []
     assert neuron.bias?     == false
+    assert neuron.error     == 0
+    assert neuron.delta     == 0
   end
 
   test "has values passed in as an agent" do
-    Neuron.start_link(%{name: :one, input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true})
+    Neuron.start_link(%{name: :one, input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, error: 1, delta: 1})
     neuron = Neuron.get(:one)
     assert neuron.name      == :one
     assert neuron.input     == 1
@@ -33,6 +37,8 @@ defmodule NeuralNetwork.NeuronTest do
     assert neuron.incoming  == [1]
     assert neuron.outgoing  == [2]
     assert neuron.bias?     == true
+    assert neuron.error     == 1
+    assert neuron.delta     == 1
   end
 
   test "has learning rate" do
@@ -41,13 +47,15 @@ defmodule NeuralNetwork.NeuronTest do
 
   test "update neuron values" do
     Neuron.start_link(%{name: :n})
-    Neuron.update(:n, %{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true})
+    Neuron.update(:n, %{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, error: 1, delta: 1})
     neuron = Neuron.get(:n)
     assert neuron.input     == 1
     assert neuron.output    == 2
     assert neuron.incoming  == [1]
     assert neuron.outgoing  == [2]
     assert neuron.bias?     == true
+    assert neuron.error     == 1
+    assert neuron.delta     == 1
   end
 
   test "bias neuron" do
@@ -92,12 +100,15 @@ defmodule NeuralNetwork.NeuronTest do
     Neuron.start_link(%{name: :y, output: 5})
     neuronY = Neuron.get(:y)
 
+    Connection.start_link(%{name: :one, source_name: neuronX.name})
+    connection_one = Connection.get(:one)
+
+    Connection.start_link(%{name: :two, source_name: neuronY.name})
+    connection_two = Connection.get(:two)
+
     Neuron.start_link(%{
             name: :a,
-            incoming: [
-              %Connection{source_name: neuronX.name},
-              %Connection{source_name: neuronY.name}
-            ]})
+            incoming: [connection_one, connection_two]})
     neuron = Neuron.get(:a) |> Neuron.activate
     assert neuron.output == 0.9426758241011313
   end
@@ -123,5 +134,27 @@ defmodule NeuralNetwork.NeuronTest do
     assert neuronA.output == 0.8807970779778823
     assert neuronB.input  == 0.3523188311911529
     assert neuronB.output == 0.5871797762705651
+  end
+
+  test "train: error rate should get smaller (learnin yo!)" do
+    Neuron.start_link(%{name: :a})
+    Neuron.start_link(%{name: :b})
+    neuronA = Neuron.get((:a))
+    neuronB = Neuron.get((:b))
+    {:ok, neuronA, neuronB} = Neuron.connect(neuronA, neuronB)
+
+    arbitrary_old_error = 1000
+
+    for n <- 1..100 do
+      neuronA = neuronA |> Neuron.activate(2)
+      neuronB = neuronB |> Neuron.activate
+
+      neuronB = neuronB |> Neuron.train(1)
+      neuronA |> Neuron.train
+
+      assert neuronB.error < arbitrary_old_error
+
+      arbitrary_old_error = neuronB.error
+    end
   end
 end
