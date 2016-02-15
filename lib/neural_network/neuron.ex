@@ -34,11 +34,8 @@ defmodule NeuralNetwork.Neuron do
 
   defp sumf do
     fn(connection, sum) ->
-      #############################
-      # TODO: explore just storing name for incoming and outgoing connections!!
-      ##################################
-      source = Neuron.get(connection.source)
-      sum + source.output * connection.weight
+      source_neuron = Neuron.get(connection.source_name)
+      sum + source_neuron.output * connection.weight
     end
   end
 
