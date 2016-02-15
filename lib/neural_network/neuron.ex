@@ -21,11 +21,11 @@ defmodule NeuralNetwork.Neuron do
 
   def get(name), do: Agent.get(name, &(&1))
 
-  def connect(source, target) do
-    connection = Connection.connection_for(source, target)
-    Neuron.update(source.name, %{outgoing: source.outgoing ++ [connection]})
-    Neuron.update(target.name, %{incoming: target.incoming ++ [connection]})
-    {:ok, Neuron.get(source.name), Neuron.get(target.name)}
+  def connect(source_neuron, target_neuron) do
+    connection = Connection.connection_for(source_neuron, target_neuron)
+    Neuron.update(source_neuron.name, %{outgoing: source_neuron.outgoing ++ [connection]})
+    Neuron.update(target_neuron.name, %{incoming: target_neuron.incoming ++ [connection]})
+    {:ok, Neuron.get(source_neuron.name), Neuron.get(target_neuron.name)}
   end
 
   def activation_function(input) do
@@ -37,7 +37,7 @@ defmodule NeuralNetwork.Neuron do
       #############################
       # TODO: explore just storing name for incoming and outgoing connections!!
       ##################################
-      source = Neuron.get(connection.source.name)
+      source = Neuron.get(connection.source)
       sum + source.output * connection.weight
     end
   end

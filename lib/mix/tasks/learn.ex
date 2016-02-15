@@ -60,11 +60,9 @@ defmodule Mix.Tasks.Learn do
     neuronB = NeuralNetwork.Neuron.get((:b))
 
 
-     {:ok, neuronA, neuronB} = NeuralNetwork.Neuron.connect(neuronA, neuronB)
-     # IO.puts List.first(neuronB.incoming).source.output
-     # IO.puts List.first(neuronB.incoming).weight
+    {:ok, neuronA, neuronB} = NeuralNetwork.Neuron.connect(neuronA, neuronB)
 
-    for i <- 1..1000 do
+    for i <- 1..1 do
       neuronA = NeuralNetwork.Neuron.activate(neuronA, 2)
       neuronB = NeuralNetwork.Neuron.activate(neuronB)
       IO.puts "A out: #{neuronA.output}"

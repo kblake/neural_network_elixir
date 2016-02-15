@@ -2,48 +2,56 @@ defmodule NeuralNetwork.ConnectionTest do
   use ExUnit.Case
   doctest NeuralNetwork.Connection
 
+  alias NeuralNetwork.{Neuron, Connection}
+
   test "has default values" do
-    connection = %NeuralNetwork.Connection{}
-    assert connection.name   == ""
-    assert connection.source == %{}
-    assert connection.target == %{}
-    assert connection.weight == 0.4
+    connection = %Connection{}
+    assert connection.name        == ""
+    assert connection.source_name == nil
+    assert connection.target_name == nil
+    assert connection.weight      == 0.4
   end
 
   test "has default values using an agent" do
-    NeuralNetwork.Connection.start_link(%{name: :one})
-    connection = NeuralNetwork.Connection.get(:one)
-    assert connection.name   == :one
-    assert connection.source == %{}
-    assert connection.target == %{}
-    assert connection.weight == 0.4
+    Connection.start_link(%{name: :one})
+    connection = Connection.get(:one)
+    assert connection.name        == :one
+    assert connection.source_name == nil
+    assert connection.target_name == nil
+    assert connection.weight      == 0.4
   end
 
   test "create new connection with custom values" do
-    NeuralNetwork.Connection.start_link(%{name: :one, source: %{this: "will be a neuron"}, target: %{this: "will be a neuron"}})
-    connection = NeuralNetwork.Connection.get(:one)
-    assert connection.source == %{this: "will be a neuron"}
-    assert connection.target == %{this: "will be a neuron"}
-    assert connection.weight == 0.4
+    Neuron.start_link(%{name: :a})
+    Neuron.start_link(%{name: :b})
+    Connection.start_link(%{name: :one, source_name: Neuron.get(:a).name, target_name: Neuron.get(:b).name})
+    connection = Connection.get(:one)
+
+    IO.inspect connection
+    assert connection.source_name == Neuron.get(:a).name
+    assert connection.target_name == Neuron.get(:b).name
+    assert connection.weight      == 0.4
   end
 
   test "update connection values" do
-    NeuralNetwork.Connection.start_link(%{name: :one})
-    NeuralNetwork.Connection.update(:one, %{source: %NeuralNetwork.Neuron{input: 10}, target: %NeuralNetwork.Neuron{input: 5} })
-    connection = NeuralNetwork.Connection.get(:one)
-    assert connection.source.input == 10
-    assert connection.target.input == 5
+    Connection.start_link(%{name: :one})
+    Neuron.start_link(%{name: :a, input: 10})
+    Neuron.start_link(%{name: :b, input: 5})
+    Connection.update(:one, %{source_name: Neuron.get(:a).name, target_name: Neuron.get(:b).name})
+    connection = Connection.get(:one)
+    assert Neuron.get(connection.source_name).input == 10
+    assert Neuron.get(connection.target_name).input == 5
   end
 
   test "create a connection for two neurons" do
-    NeuralNetwork.Neuron.start_link(%{name: :neuronA})
-    neuronA = NeuralNetwork.Neuron.get(:neuronA)
-    NeuralNetwork.Neuron.start_link(%{name: :neuronB})
-    neuronB = NeuralNetwork.Neuron.get(:neuronB)
+    Neuron.start_link(%{name: :neuronA})
+    neuronA = Neuron.get(:neuronA)
+    Neuron.start_link(%{name: :neuronB})
+    neuronB = Neuron.get(:neuronB)
 
-    connection = NeuralNetwork.Connection.connection_for(neuronA, neuronB)
+    connection = Connection.connection_for(neuronA, neuronB)
 
-    assert connection.source == neuronA
-    assert connection.target == neuronB
+    assert connection.source_name == neuronA.name
+    assert connection.target_name == neuronB.name
   end
 end

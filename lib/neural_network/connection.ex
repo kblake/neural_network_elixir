@@ -1,5 +1,5 @@
 defmodule NeuralNetwork.Connection do
-  defstruct name: "", source: %{}, target: %{}, weight: 0.4 # make weight random at some point
+  defstruct name: "", source_name: nil, target_name: nil, weight: 0.4 # make weight random at some point
 
   def start_link(connection_fields) do
     Agent.start_link(fn ->
@@ -17,7 +17,7 @@ defmodule NeuralNetwork.Connection do
 
   def connection_for(source, target) do
     NeuralNetwork.Connection.start_link(%{name: :connection})
-    NeuralNetwork.Connection.update(:connection, %{source: source, target: target})
+    NeuralNetwork.Connection.update(:connection, %{source_name: source.name, target_name: target.name})
     NeuralNetwork.Connection.get(:connection)
   end
 end

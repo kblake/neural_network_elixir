@@ -95,8 +95,8 @@ defmodule NeuralNetwork.NeuronTest do
     Neuron.start_link(%{
             name: :a,
             incoming: [
-              %Connection{source: neuronX},
-              %Connection{source: neuronY}
+              %Connection{source: neuronX.name},
+              %Connection{source: neuronY.name}
             ]})
     neuron = Neuron.get(:a) |> Neuron.activate
     assert neuron.output == 0.9426758241011313
