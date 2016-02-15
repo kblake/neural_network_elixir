@@ -39,10 +39,12 @@ defmodule NeuralNetwork.Neuron do
   end
 
   def activate(neuron, value \\ nil) do
-    if Neuron.get(neuron.name).bias? do
+    neuron = Neuron.get(neuron.name) # just to make sure we are not getting a stale agent
+
+    if neuron.bias? do
       Neuron.update(neuron.name, %{output: 1})
     else
-      input = value || Enum.reduce(Neuron.get(neuron.name).incoming, 0, sumf)
+      input = value || Enum.reduce(neuron.incoming, 0, sumf)
       Neuron.update(neuron.name, %{input: input, output: activation_function(input)})
     end
 
@@ -51,26 +53,28 @@ defmodule NeuralNetwork.Neuron do
   end
 
   def train(neuron, target_output \\ nil) do
+    neuron = Neuron.get(neuron.name) # just to make sure we are not getting a stale agent
+
     if output_neuron?(neuron) do
-      error = target_output - Neuron.get(neuron.name).output
+      error = target_output - neuron.output
 
       Neuron.update(neuron.name,
                     %{
                       error: error,
-                      delta: -error * input_derivative(Neuron.get(neuron.name).input)
+                      delta: -error * input_derivative(neuron.input)
                     })
     else
       neuron |> calculate_outgoing_delta
     end
 
-    neuron |> update_outgoing_weights
+    Neuron.get(neuron.name) |> update_outgoing_weights
 
     # conveniently return updated neuron
     Neuron.get(neuron.name)
   end
 
   defp output_neuron?(neuron) do
-    Neuron.get(neuron.name).outgoing == []
+    neuron.outgoing == []
   end
 
   defp input_derivative(input_value) do
@@ -79,16 +83,16 @@ defmodule NeuralNetwork.Neuron do
   end
 
   defp calculate_outgoing_delta(neuron) do
-    delta = Enum.reduce(Neuron.get(neuron.name).outgoing, 0, fn connection, sum ->
-      sum + input_derivative(Neuron.get(neuron.name).input) * Connection.get(connection.name).weight * Neuron.get(connection.target_name).delta
+    delta = Enum.reduce(neuron.outgoing, 0, fn connection, sum ->
+      sum + input_derivative(neuron.input) * Connection.get(connection.name).weight * Neuron.get(connection.target_name).delta
     end)
 
     Neuron.update(neuron.name, %{delta: delta})
   end
 
   defp update_outgoing_weights(neuron) do
-    for connection <- Neuron.get(neuron.name).outgoing do
-      gradient = Neuron.get(neuron.name).output * Neuron.get(connection.target_name).delta
+    for connection <- neuron.outgoing do
+      gradient = neuron.output * Neuron.get(connection.target_name).delta
       updated_weight = Connection.get(connection.name).weight - gradient * learning_rate
       Connection.update(connection.name, %{weight: updated_weight})
     end
