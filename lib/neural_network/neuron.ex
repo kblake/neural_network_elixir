@@ -10,8 +10,8 @@ defmodule NeuralNetwork.Neuron do
   end
 
   def start_link(neuron_fields \\ %{}) do
-    {:ok, pid} = Agent.start_link(fn -> Map.merge(%Neuron{}, neuron_fields) end)
-    update(pid, %{pid: pid})
+    {:ok, pid} = Agent.start_link(fn -> %Neuron{} end)
+    update(pid, Map.merge(neuron_fields, %{pid: pid}))
   end
 
   def update(pid, neuron_fields) do

@@ -4,8 +4,8 @@ defmodule NeuralNetwork.Connection do
   defstruct pid: "", source_pid: nil, target_pid: nil, weight: 0.4 # make weight random at some point
 
   def start_link(connection_fields \\ %{}) do
-    {:ok, pid} = Agent.start_link(fn -> Map.merge(%Connection{}, connection_fields) end)
-    update(pid, %{pid: pid})
+    {:ok, pid} = Agent.start_link(fn -> %Connection{} end)
+    update(pid, Map.merge(connection_fields, %{pid: pid}))
   end
 
   def get(pid), do: Agent.get(pid, &(&1))

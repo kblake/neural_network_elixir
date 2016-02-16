@@ -5,23 +5,18 @@ defmodule NeuralNetwork.LayerTest do
   alias NeuralNetwork.{Neuron, Layer}
 
   test "has default values using an agent" do
-    Layer.start_link(%{name: :one})
-    layer = Layer.get(:one)
-    assert layer.name    == :one
+    layer = Layer.start_link
     assert layer.neurons == []
   end
 
   test "create new layer with custom values" do
-    Layer.start_link(%{name: :one, neurons: ["foo"]})
-    layer = Layer.get(:one)
-
+    layer = Layer.start_link(%{neurons: ["foo"]})
     assert layer.neurons == ["foo"]
   end
 
   test "update layer values" do
-    Layer.start_link(%{name: :one})
-    Layer.update(:one, %{neurons: ["bar"]})
-    layer = Layer.get(:one)
-    assert Layer.get(:one).neurons == ["bar"]
+    layer = Layer.start_link
+    layer = Layer.update(layer.pid, %{neurons: ["bar"]})
+    assert layer.neurons == ["bar"]
   end
 end

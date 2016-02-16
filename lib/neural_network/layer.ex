@@ -1,17 +1,22 @@
 defmodule NeuralNetwork.Layer do
-  alias NeuralNetwork.{Neuron, Connection}
+  alias NeuralNetwork.{Layer}
 
-  defstruct name: "", neurons: []
+  defstruct pid: "", neurons: []
 
-  def start_link(layer_fields) do
-    Agent.start_link(fn ->
-      Map.merge(%NeuralNetwork.Layer{}, layer_fields)
-    end, name: layer_fields.name)
+  def start_link(layer_fields \\ %{}) do
+    {:ok, pid} = Agent.start_link(fn -> %NeuralNetwork.Layer{} end)
+    update(pid, Map.merge(layer_fields, %{pid: pid}))
   end
 
-  def get(name), do: Agent.get(name, &(&1))
+  def get(pid), do: Agent.get(pid, &(&1))
 
-  def update(name, fields) do
-    Agent.update(name, fn layer -> Map.merge(layer, fields) end)
+  def update(pid, fields) do
+    Agent.update(pid, fn layer -> Map.merge(layer, fields) end)
+    get(pid)
   end
+
+#   def initialize(size)
+#   @neurons = Array.new(size) { Neuron.new }
+# end
+
 end
