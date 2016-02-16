@@ -4,53 +4,39 @@ defmodule NeuralNetwork.ConnectionTest do
 
   alias NeuralNetwork.{Neuron, Connection}
 
-  test "has default values" do
-    connection = %Connection{}
-    assert connection.name        == ""
-    assert connection.source_name == nil
-    assert connection.target_name == nil
-    assert connection.weight      == 0.4
-  end
-
   test "has default values using an agent" do
-    Connection.start_link(%{name: :one})
-    connection = Connection.get(:one)
-    assert connection.name        == :one
-    assert connection.source_name == nil
-    assert connection.target_name == nil
-    assert connection.weight      == 0.4
+    connection = Connection.start_link
+    assert connection.source_pid == nil
+    assert connection.target_pid == nil
+    assert connection.weight     == 0.4
   end
 
   test "create new connection with custom values" do
-    Neuron.start_link(%{name: :a})
-    Neuron.start_link(%{name: :b})
-    Connection.start_link(%{name: :one, source_name: Neuron.get(:a).name, target_name: Neuron.get(:b).name})
-    connection = Connection.get(:one)
+    neuronA = Neuron.start_link
+    neuronB = Neuron.start_link
+    connection = Connection.start_link(%{source_pid: neuronA.pid, target_pid: neuronB.pid})
 
-    assert connection.source_name == Neuron.get(:a).name
-    assert connection.target_name == Neuron.get(:b).name
-    assert connection.weight      == 0.4
+    assert connection.source_pid == neuronA.pid
+    assert connection.target_pid == neuronB.pid
+    assert connection.weight     == 0.4
   end
 
   test "update connection values" do
-    Connection.start_link(%{name: :one})
-    Neuron.start_link(%{name: :a, input: 10})
-    Neuron.start_link(%{name: :b, input: 5})
-    Connection.update(:one, %{source_name: Neuron.get(:a).name, target_name: Neuron.get(:b).name})
-    connection = Connection.get(:one)
-    assert Neuron.get(connection.source_name).input == 10
-    assert Neuron.get(connection.target_name).input == 5
+    connection = Connection.start_link
+    neuronA = Neuron.start_link(%{input: 10})
+    neuronB = Neuron.start_link(%{input: 5})
+    connection = Connection.update(connection.pid, %{source_pid: neuronA.pid, target_pid: neuronB.pid})
+    assert Neuron.get(connection.source_pid).input == 10
+    assert Neuron.get(connection.target_pid).input == 5
   end
 
   test "create a connection for two neurons" do
-    Neuron.start_link(%{name: :neuronA})
-    neuronA = Neuron.get(:neuronA)
-    Neuron.start_link(%{name: :neuronB})
-    neuronB = Neuron.get(:neuronB)
+    neuronA = Neuron.start_link
+    neuronB = Neuron.start_link
 
     connection = Connection.connection_for(neuronA, neuronB)
 
-    assert connection.source_name == neuronA.name
-    assert connection.target_name == neuronB.name
+    assert connection.source_pid == neuronA.pid
+    assert connection.target_pid == neuronB.pid
   end
 end

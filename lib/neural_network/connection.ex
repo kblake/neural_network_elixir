@@ -1,23 +1,24 @@
 defmodule NeuralNetwork.Connection do
-  defstruct name: "", source_name: nil, target_name: nil, weight: 0.4 # make weight random at some point
+  alias NeuralNetwork.{Connection}
 
-  def start_link(connection_fields) do
-    Agent.start_link(fn ->
-      Map.merge(%NeuralNetwork.Connection{}, connection_fields)
-    end, name: connection_fields.name)
+  defstruct pid: "", source_pid: nil, target_pid: nil, weight: 0.4 # make weight random at some point
+
+  def start_link(connection_fields \\ %{}) do
+    {:ok, pid} = Agent.start_link(fn -> Map.merge(%Connection{}, connection_fields) end)
+    update(pid, %{pid: pid})
   end
 
-  def get(name), do: Agent.get(name, &(&1))
+  def get(pid), do: Agent.get(pid, &(&1))
 
-  def update(name, fields) do
-    Agent.update(name, fn connection -> Map.merge(connection, fields) end)
+  def update(pid, fields) do
+    Agent.update(pid, fn connection -> Map.merge(connection, fields) end)
+    get(pid)
   end
 
-  def stop(name), do: Process.exit(Process.whereis(name), :shutdown)
+  def stop(pid), do: Process.exit(Process.whereis(pid), :shutdown)
 
   def connection_for(source, target) do
-    NeuralNetwork.Connection.start_link(%{name: :connection})
-    NeuralNetwork.Connection.update(:connection, %{source_name: source.name, target_name: target.name})
-    NeuralNetwork.Connection.get(:connection)
+    connection = start_link
+    update(connection.pid, %{source_pid: source.pid, target_pid: target.pid})
   end
 end

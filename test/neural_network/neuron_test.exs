@@ -3,22 +3,8 @@ defmodule NeuralNetwork.NeuronTest do
   use ExUnit.Case
   doctest Neuron
 
-  test "has default values" do
-    neuron = %Neuron{}
-    assert neuron.name      == ""
-    assert neuron.input     == 0
-    assert neuron.output    == 0
-    assert neuron.incoming  == []
-    assert neuron.outgoing  == []
-    assert neuron.bias?     == false
-    assert neuron.error     == 0
-    assert neuron.delta     == 0
-  end
-
   test "has default values as an agent" do
-    Neuron.start_link(%{name: :one})
-    neuron = Neuron.get(:one)
-    assert neuron.name      == :one
+    neuron = Neuron.start_link
     assert neuron.input     == 0
     assert neuron.output    == 0
     assert neuron.incoming  == []
@@ -29,9 +15,7 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test "has values passed in as an agent" do
-    Neuron.start_link(%{name: :one, input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, error: 1, delta: 1})
-    neuron = Neuron.get(:one)
-    assert neuron.name      == :one
+    neuron = Neuron.start_link(%{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, error: 1, delta: 1})
     assert neuron.input     == 1
     assert neuron.output    == 2
     assert neuron.incoming  == [1]
@@ -46,9 +30,8 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test "update neuron values" do
-    Neuron.start_link(%{name: :n})
-    Neuron.update(:n, %{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, error: 1, delta: 1})
-    neuron = Neuron.get(:n)
+    neuron = Neuron.start_link
+    neuron = Neuron.update(neuron.pid, %{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, error: 1, delta: 1})
     assert neuron.input     == 1
     assert neuron.output    == 2
     assert neuron.incoming  == [1]
@@ -59,18 +42,15 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test "bias neuron" do
-    Neuron.start_link(%{name: :b, bias?: true})
-    bias_neuron = Neuron.get(:b)
+    bias_neuron = Neuron.start_link(%{bias?: true})
     assert bias_neuron.bias?
     assert bias_neuron.incoming == []
     assert bias_neuron.outgoing == []
   end
 
   test ".connect" do
-    Neuron.start_link(%{name: :a})
-    Neuron.start_link(%{name: :b})
-    neuronA = Neuron.get(:a)
-    neuronB = Neuron.get(:b)
+    neuronA = Neuron.start_link
+    neuronB = Neuron.start_link
 
     {:ok, neuronA, neuronB} = Neuron.connect(neuronA, neuronB)
 
@@ -83,48 +63,38 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test ".activate with specified value" do
-    Neuron.start_link(%{name: :a})
-    neuron = Neuron.get(:a) |> Neuron.activate(1)
+    neuron = Neuron.start_link
+    neuron = neuron |> Neuron.activate(1)
     assert neuron.output == 0.7310585786300049
   end
 
   test ".activate with no incoming connections" do
-    Neuron.start_link(%{name: :a})
-    neuron = Neuron.get(:a) |> Neuron.activate
+    neuron = Neuron.start_link
+    neuron = neuron |> Neuron.activate
     assert neuron.output == 0.5
   end
 
   test ".activate with incoming connections" do
-    Neuron.start_link(%{name: :x, output: 2})
-    neuronX = Neuron.get(:x)
-    Neuron.start_link(%{name: :y, output: 5})
-    neuronY = Neuron.get(:y)
+    neuronX = Neuron.start_link(%{output: 2})
+    neuronY = Neuron.start_link(%{output: 5})
 
-    Connection.start_link(%{name: :one, source_name: neuronX.name})
-    connection_one = Connection.get(:one)
+    connection_one = Connection.start_link(%{source_pid: neuronX.pid})
+    connection_two = Connection.start_link(%{source_pid: neuronY.pid})
 
-    Connection.start_link(%{name: :two, source_name: neuronY.name})
-    connection_two = Connection.get(:two)
-
-    Neuron.start_link(%{
-            name: :a,
-            incoming: [connection_one, connection_two]})
-    neuron = Neuron.get(:a) |> Neuron.activate
+    neuronA = Neuron.start_link(%{incoming: [connection_one, connection_two]})
+    neuron = neuronA |> Neuron.activate
     assert neuron.output == 0.9426758241011313
   end
 
   test ".activate a bias neuron" do
-    Neuron.start_link(%{name: :a, bias?: true})
-    neuron = Neuron.get(:a) |> Neuron.activate
+    neuron = Neuron.start_link(%{bias?: true})
+    neuron = neuron |> Neuron.activate
     assert neuron.output == 1
   end
 
   test "connect and activate two neurons" do
-    Neuron.start_link(%{name: :a})
-    Neuron.start_link(%{name: :b})
-    neuronA = Neuron.get((:a))
-    neuronB = Neuron.get((:b))
-
+    neuronA = Neuron.start_link
+    neuronB = Neuron.start_link
     {:ok, neuronA, neuronB} = Neuron.connect(neuronA, neuronB)
 
     neuronA = Neuron.activate(neuronA, 2)
@@ -137,10 +107,8 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test "train: error rate should get smaller (learnin yo!)" do
-    Neuron.start_link(%{name: :a})
-    Neuron.start_link(%{name: :b})
-    neuronA = Neuron.get((:a))
-    neuronB = Neuron.get((:b))
+    neuronA = Neuron.start_link
+    neuronB = Neuron.start_link
     {:ok, neuronA, neuronB} = Neuron.connect(neuronA, neuronB)
 
     arbitrary_old_error = 1000

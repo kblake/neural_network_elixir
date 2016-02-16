@@ -54,25 +54,22 @@ defmodule Mix.Tasks.Learn do
   #   end
 
 
-    NeuralNetwork.Neuron.start_link(%{name: :a})
-    NeuralNetwork.Neuron.start_link(%{name: :b})
-    neuronA = NeuralNetwork.Neuron.get((:a))
-    neuronB = NeuralNetwork.Neuron.get((:b))
-
+    neuronA = NeuralNetwork.Neuron.start_link
+    neuronB = NeuralNetwork.Neuron.start_link
 
     {:ok, neuronA, neuronB} = NeuralNetwork.Neuron.connect(neuronA, neuronB)
 
     for n <- 0..10000 do
-      neuronA = NeuralNetwork.Neuron.get(neuronA.name) |> NeuralNetwork.Neuron.activate(2)
-      neuronB = NeuralNetwork.Neuron.get(neuronB.name) |> NeuralNetwork.Neuron.activate
+      neuronA = NeuralNetwork.Neuron.get(neuronA.pid) |> NeuralNetwork.Neuron.activate(2)
+      neuronB = NeuralNetwork.Neuron.get(neuronB.pid) |> NeuralNetwork.Neuron.activate
 
       neuronB = neuronB |> NeuralNetwork.Neuron.train(1)
       neuronA = neuronA |> NeuralNetwork.Neuron.train
 
       if n == 0 || rem(n, 1000) == 0 do
         # IO.puts "A out: #{neuronA.output}"
-        # IO.puts "B out: #{NeuralNetwork.Neuron.get(neuronB.name).output}"
-        IO.puts "epoch: #{n} error: #{NeuralNetwork.Neuron.get(neuronB.name).error}"
+        # IO.puts "B out: #{NeuralNetwork.Neuron.get(neuronB.pid).output}"
+        IO.puts "epoch: #{n} error: #{NeuralNetwork.Neuron.get(neuronB.pid).error}"
       end
     end
 
