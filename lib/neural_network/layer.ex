@@ -22,4 +22,39 @@ defmodule NeuralNetwork.Layer do
   defp create_neurons(size) when size > 0 do
     Enum.into 1..size, [], fn _ -> Neuron.start_link end
   end
+
+  def add_neurons(layer, neurons) do
+    update(layer.pid, %{neurons: get(layer.pid).neurons ++ neurons})
+    get(layer.pid)
+  end
+
+  def clear_neurons(layer) do
+    update(layer.pid, %{neurons: []})
+  end
+
+  def set_neurons(layer, neurons) do
+    clear_neurons(layer)
+    add_neurons(layer, neurons)
+  end
+
+  def connect(input_layer, output_layer) do
+    unless contains_bias?(input_layer) do
+      add_neurons(input_layer, [Neuron.start_link(%{bias?: true})])
+    end
+
+    for source_neuron <- get(input_layer.pid).neurons, target_neuron <- get(output_layer.pid).neurons do
+      Neuron.connect(source_neuron, target_neuron)
+    end
+
+    updated_source_neurons = Enum.map(get(input_layer.pid).neurons, fn neuron -> Neuron.get(neuron.pid) end)
+    set_neurons(input_layer, updated_source_neurons)
+    updated_output_neurons = Enum.map(get(output_layer.pid).neurons, fn neuron -> Neuron.get(neuron.pid) end)
+    set_neurons(output_layer, updated_output_neurons)
+
+    {:ok, get(input_layer.pid), get(output_layer.pid)}
+  end
+
+  defp contains_bias?(layer) do
+    Enum.any? layer.neurons, fn(neuron) -> neuron.bias? end
+  end
 end
