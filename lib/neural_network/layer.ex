@@ -16,15 +16,10 @@ defmodule NeuralNetwork.Layer do
     get(pid)
   end
 
-  defp create_neurons(nil) do
-    []
-  end
+  defp create_neurons(nil), do: []
+  defp create_neurons(size) when size < 1, do: []
 
-  defp create_neurons(size) do
-    if size > 0 do
-      Enum.into 1..size, [], fn x -> Neuron.start_link end
-    else
-      []
-    end
+  defp create_neurons(size) when size > 0 do
+    Enum.into 1..size, [], fn _ -> Neuron.start_link end
   end
 end

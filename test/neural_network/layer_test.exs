@@ -14,4 +14,9 @@ defmodule NeuralNetwork.LayerTest do
     assert length(layer.neurons) == 3
     assert is_map(List.first(layer.neurons))
   end
+
+  test "create new layer with empty neuron list when size is negative" do
+    layer = Layer.start_link(%{neuron_size: -3})
+    assert length(layer.neurons) == 0
+  end
 end
