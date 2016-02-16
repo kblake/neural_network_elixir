@@ -57,4 +57,17 @@ defmodule NeuralNetwork.Layer do
   defp contains_bias?(layer) do
     Enum.any? layer.neurons, fn(neuron) -> neuron.bias? end
   end
+
+  def activate(layer, values \\ nil) do
+    values = List.wrap(values) # coerce to [] if nil
+
+    activated_neurons = layer.neurons
+    |> Stream.with_index
+    |> Enum.map(fn(tuple) ->
+         {neuron, index} = tuple
+         Neuron.activate(neuron, Enum.at(values, index))
+       end)
+
+    set_neurons(layer, activated_neurons)
+  end
 end

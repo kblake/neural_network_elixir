@@ -61,4 +61,22 @@ defmodule NeuralNetwork.LayerTest do
       assert Enum.map(neuron.incoming, fn connection -> Neuron.get(connection.source_pid) end) == input_layer.neurons
     end
   end
+
+  test "activate a layer: when values are nil" do
+    layer  = Layer.start_link(%{neuron_size: 2})
+    layer = Layer.activate(layer)
+
+    for neuron <- layer.neurons do
+      assert neuron.output == 0.5
+    end
+  end
+
+  test "activate a layer: with values" do
+    layer  = Layer.start_link(%{neuron_size: 2})
+    layer = Layer.activate(layer, [1,2])
+
+    for neuron <- layer.neurons do
+      assert neuron.output >= 0.5 && neuron.output <= 1.0
+    end
+  end
 end
