@@ -1,11 +1,12 @@
 defmodule NeuralNetwork.Layer do
-  alias NeuralNetwork.{Layer}
+  alias NeuralNetwork.{Neuron, Layer}
 
   defstruct pid: "", neurons: []
 
   def start_link(layer_fields \\ %{}) do
-    {:ok, pid} = Agent.start_link(fn -> %NeuralNetwork.Layer{} end)
-    update(pid, Map.merge(layer_fields, %{pid: pid}))
+    {:ok, pid} = Agent.start_link(fn -> %Layer{} end)
+    neurons = create_neurons(Map.get(layer_fields, :neuron_size))
+    update(pid, %{pid: pid, neurons: neurons})
   end
 
   def get(pid), do: Agent.get(pid, &(&1))
@@ -15,8 +16,15 @@ defmodule NeuralNetwork.Layer do
     get(pid)
   end
 
-#   def initialize(size)
-#   @neurons = Array.new(size) { Neuron.new }
-# end
+  defp create_neurons(nil) do
+    []
+  end
 
+  defp create_neurons(size) do
+    if size > 0 do
+      Enum.into 1..size, [], fn x -> Neuron.start_link end
+    else
+      []
+    end
+  end
 end
