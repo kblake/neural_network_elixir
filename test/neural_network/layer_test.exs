@@ -79,4 +79,10 @@ defmodule NeuralNetwork.LayerTest do
       assert neuron.output >= 0.5 && neuron.output <= 1.0
     end
   end
+
+  test "mapped outputs for layer neurons" do
+    layer  = Layer.start_link(%{neuron_size: 2})
+    layer = Layer.activate(layer, [1,2])
+    assert Layer.neuron_outputs(layer) == [0.7310585786300049, 0.8807970779778823]
+  end
 end

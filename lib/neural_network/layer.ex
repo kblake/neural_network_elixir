@@ -70,4 +70,8 @@ defmodule NeuralNetwork.Layer do
 
     set_neurons(layer, activated_neurons)
   end
+
+  def neuron_outputs(layer) do
+    Enum.map(layer.neurons, fn neuron -> neuron.output end)
+  end
 end
