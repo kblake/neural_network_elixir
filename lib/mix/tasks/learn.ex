@@ -54,29 +54,32 @@ defmodule Mix.Tasks.Learn do
   #   end
 
 
-    #puts
-    #puts "*" * 80
-    #puts "NETWORK"
-    #net = NeuralNetwork::Network.new([3,2,1])
-    #net.activate([1,2, 3])
+    IO.puts "NETWORK"
+    network = NeuralNetwork.Network.start_link([3,2,1])
+    network = NeuralNetwork.Network.activate(network, [1,2,3])
 
-    #puts "INPUT"
-    #net.input_layer.neurons.each do |n|
-    #puts "in #{n.input}  out #{n.output}"
-    #end
+    IO.puts "INPUT"
+    for neuron <- network.input_layer.neurons do
+      IO.puts "in #{neuron.input}  out #{neuron.output}"
+    end
+
+    IO.puts "HIDDEN"
+    for hidden_layer <- network.hidden_layers do
+      for neuron <- hidden_layer.neurons do
+        IO.puts "in #{neuron.input}  out #{neuron.output}"
+      end
+    end
+
+    IO.puts "OUTPUT"
+    for neuron <- network.output_layer.neurons do
+      IO.puts "in #{neuron.input}  out #{neuron.output}"
+    end
 
 
-    #puts "HIDDEN"
-    #net.hidden_layers.each do |l|
-    #l.neurons.each do |n|
-    #puts "in #{n.input}  out #{n.output}"
-    #end
-    #end
-
-    #puts "OUTPUT"
-    #net.output_layer.neurons.each do |n|
-    #puts "in #{n.input}  out #{n.output}"
-    #end
+    IO.puts ""
+    IO.puts "********************************************************"
+    IO.puts "********************************************************"
+    IO.puts ""
 
 
     neuronA = NeuralNetwork.Neuron.start_link
