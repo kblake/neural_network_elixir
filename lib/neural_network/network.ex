@@ -1,7 +1,7 @@
 defmodule NeuralNetwork.Network do
   alias NeuralNetwork.{Layer, Network}
 
-  defstruct pid: "", input_layer: %{}, output_layer: %{}, hidden_layers: %{}
+  defstruct pid: nil, input_layer: %{}, output_layer: %{}, hidden_layers: []
 
   def start_link(layer_sizes \\ []) do
     {:ok, pid} = Agent.start_link(fn -> %Network{} end)
@@ -24,6 +24,7 @@ defmodule NeuralNetwork.Network do
   def get(pid), do: Agent.get(pid, &(&1))
 
   def update(pid, fields) do
+    fields = Map.merge(fields, %{pid: pid}) # preserve the pid!!
     Agent.update(pid, fn network -> Map.merge(network, fields) end)
     get(pid)
   end
