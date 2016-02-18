@@ -54,6 +54,31 @@ defmodule Mix.Tasks.Learn do
   #   end
 
 
+    #puts
+    #puts "*" * 80
+    #puts "NETWORK"
+    #net = NeuralNetwork::Network.new([3,2,1])
+    #net.activate([1,2, 3])
+
+    #puts "INPUT"
+    #net.input_layer.neurons.each do |n|
+    #puts "in #{n.input}  out #{n.output}"
+    #end
+
+
+    #puts "HIDDEN"
+    #net.hidden_layers.each do |l|
+    #l.neurons.each do |n|
+    #puts "in #{n.input}  out #{n.output}"
+    #end
+    #end
+
+    #puts "OUTPUT"
+    #net.output_layer.neurons.each do |n|
+    #puts "in #{n.input}  out #{n.output}"
+    #end
+
+
     neuronA = NeuralNetwork.Neuron.start_link
     neuronB = NeuralNetwork.Neuron.start_link
 

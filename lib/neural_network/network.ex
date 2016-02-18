@@ -73,4 +73,14 @@ defmodule NeuralNetwork.Network do
   defp flatten_layers(layers) do
     [layers.input_layer] ++ layers.hidden_layers ++ [layers.output_layer]
   end
+
+  def activate(network, input_values) do
+    network.input_layer |> Layer.activate(input_values)
+
+    for hidden_layer <- network.hidden_layers do
+      hidden_layer |> Layer.activate
+    end
+
+    network.output_layer |> Layer.activate
+  end
 end
