@@ -6,19 +6,17 @@ defmodule NeuralNetwork.Network do
   def start_link(layer_sizes \\ []) do
     {:ok, pid} = Agent.start_link(fn -> %Network{} end)
 
-    layers = %{
-      input_layer:    input_neurons(layer_sizes),
-      output_layer:   output_neurons(layer_sizes),
-      hidden_layers:  hidden_neurons(layer_sizes)
-    }
+    layers = map_layers(
+      input_neurons(layer_sizes),
+      hidden_neurons(layer_sizes),
+      output_neurons(layer_sizes))
 
     connected_layers = layers |> connect_layers
 
-    layers = %{
-      input_layer:    List.first(connected_layers),
-      hidden_layers:   hidden_layer_slice(connected_layers),
-      output_layer:  List.last(connected_layers)
-    }
+    layers = map_layers(
+      List.first(connected_layers),
+      hidden_layer_slice(connected_layers),
+      List.last(connected_layers))
 
     update(pid, layers)
   end
@@ -75,12 +73,22 @@ defmodule NeuralNetwork.Network do
   end
 
   def activate(network, input_values) do
-    network.input_layer |> Layer.activate(input_values)
+    layers = map_layers(
+      network.input_layer |> Layer.activate(input_values),
+      Enum.map(network.hidden_layers, fn hidden_layer ->
+        hidden_layer |> Layer.activate
+      end),
+      network.output_layer |> Layer.activate
+    )
 
-    for hidden_layer <- network.hidden_layers do
-      hidden_layer |> Layer.activate
-    end
+    update(network.pid, layers)
+  end
 
-    network.output_layer |> Layer.activate
+  defp map_layers(input_layer, hidden_layers, output_layer) do
+    %{
+      input_layer:    input_layer,
+      output_layer:   output_layer,
+      hidden_layers:  hidden_layers
+    }
   end
 end
