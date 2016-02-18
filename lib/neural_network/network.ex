@@ -53,8 +53,8 @@ defmodule NeuralNetwork.Network do
     |> Enum.slice(1..length(layer_sizes) - 2)
   end
 
-  defp connect_layers(olayers) do
-    layers = olayers |> flatten_layers
+  defp connect_layers(layers) do
+    layers = layers |> flatten_layers
 
     layers
     |> Stream.with_index
