@@ -1,7 +1,7 @@
 defmodule NeuralNetwork.Neuron do
   alias NeuralNetwork.{Neuron, Connection}
 
-  defstruct pid: "", input: 0, output: 0, incoming: [], outgoing: [], bias?: false, error: 0, delta: 0
+  defstruct pid: "", input: 0, output: 0, incoming: [], outgoing: [], bias?: false, delta: 0
 
   @learning_rate 0.3
 
@@ -55,16 +55,16 @@ defmodule NeuralNetwork.Neuron do
   def train(neuron, target_output \\ nil) do
     neuron = Neuron.get(neuron.pid) # just to make sure we are not getting a stale agent
 
-    if output_neuron?(neuron) do
-      error = target_output - neuron.output
+    if !neuron.bias? && !input_neuron?(neuron) do
+      if output_neuron?(neuron) do
+        # This is the derivative of the error function
+        # not simply difference in output
+        # http://whiteboard.ping.se/MachineLearning/BackProp
 
-      Neuron.update(neuron.pid,
-                    %{
-                      error: error,
-                      delta: -error * input_derivative(neuron.input)
-                    })
-    else
-      neuron |> calculate_outgoing_delta
+        Neuron.update(neuron.pid, %{delta: neuron.output - target_output})
+      else
+        neuron |> calculate_outgoing_delta
+      end
     end
 
     Neuron.get(neuron.pid) |> update_outgoing_weights
@@ -77,14 +77,13 @@ defmodule NeuralNetwork.Neuron do
     neuron.outgoing == []
   end
 
-  defp input_derivative(input_value) do
-    val = 1/(1 + :math.exp(-input_value))
-    val * (1 - val)
+  defp input_neuron?(neuron) do
+    neuron.incoming == []
   end
 
   defp calculate_outgoing_delta(neuron) do
     delta = Enum.reduce(neuron.outgoing, 0, fn connection, sum ->
-      sum + input_derivative(neuron.input) * Connection.get(connection.pid).weight * Neuron.get(connection.target_pid).delta
+      sum + Connection.get(connection.pid).weight * Neuron.get(connection.target_pid).delta
     end)
 
     Neuron.update(neuron.pid, %{delta: delta})

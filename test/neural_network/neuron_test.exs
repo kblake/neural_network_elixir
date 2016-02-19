@@ -10,18 +10,16 @@ defmodule NeuralNetwork.NeuronTest do
     assert neuron.incoming  == []
     assert neuron.outgoing  == []
     assert neuron.bias?     == false
-    assert neuron.error     == 0
     assert neuron.delta     == 0
   end
 
   test "has values passed in as an agent" do
-    neuron = Neuron.start_link(%{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, error: 1, delta: 1})
+    neuron = Neuron.start_link(%{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
     assert neuron.input     == 1
     assert neuron.output    == 2
     assert neuron.incoming  == [1]
     assert neuron.outgoing  == [2]
     assert neuron.bias?     == true
-    assert neuron.error     == 1
     assert neuron.delta     == 1
   end
 
@@ -31,13 +29,12 @@ defmodule NeuralNetwork.NeuronTest do
 
   test "update neuron values" do
     neuron = Neuron.start_link
-    neuron = Neuron.update(neuron.pid, %{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, error: 1, delta: 1})
+    neuron = Neuron.update(neuron.pid, %{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
     assert neuron.input     == 1
     assert neuron.output    == 2
     assert neuron.incoming  == [1]
     assert neuron.outgoing  == [2]
     assert neuron.bias?     == true
-    assert neuron.error     == 1
     assert neuron.delta     == 1
   end
 
@@ -106,12 +103,12 @@ defmodule NeuralNetwork.NeuronTest do
     assert neuronB.output == 0.5871797762705651
   end
 
-  test "train: error rate should get smaller (learnin yo!)" do
+  test "train: delta should get smaller (learnin yo!)" do
     neuronA = Neuron.start_link
     neuronB = Neuron.start_link
     {:ok, neuronA, neuronB} = Neuron.connect(neuronA, neuronB)
 
-    arbitrary_old_error = 1000
+    arbitrary_old_delta = 1000
 
     for n <- 1..100 do
       neuronA = neuronA |> Neuron.activate(2)
@@ -120,9 +117,10 @@ defmodule NeuralNetwork.NeuronTest do
       neuronB = neuronB |> Neuron.train(1)
       neuronA |> Neuron.train
 
-      assert neuronB.error < arbitrary_old_error
+      # neuronB delta should be smaller than the previous one
+      assert neuronB.delta < arbitrary_old_delta
 
-      arbitrary_old_error = neuronB.error
+      arbitrary_old_delta = neuronB.delta
     end
   end
 end
