@@ -1,7 +1,7 @@
 defmodule NeuralNetwork.Network do
   alias NeuralNetwork.{Layer, Network}
 
-  defstruct pid: nil, input_layer: %{}, output_layer: %{}, hidden_layers: []
+  defstruct pid: nil, input_layer: %{}, output_layer: %{}, hidden_layers: [], error: 0
 
   def start_link(layer_sizes \\ []) do
     {:ok, pid} = Agent.start_link(fn -> %Network{} end)
@@ -83,6 +83,37 @@ defmodule NeuralNetwork.Network do
     )
 
     update(network.pid, layers)
+  end
+
+  # Back Propogate:
+  # train layers in reverse
+  def train(network, target_outputs) do
+    output_layer = network.output_layer |> Layer.train(target_outputs)
+    update(network.pid, %{error: error_function(network, target_outputs)})
+
+
+    hidden_layers = network.hidden_layers
+                    |> Enum.reverse
+                    |> Enum.map(fn layer -> layer |> Layer.train end)
+
+
+    input_layer = network.input_layer |> Layer.train(target_outputs)
+
+    layers = map_layers(
+      input_layer,
+      hidden_layers,
+      output_layer
+    )
+
+    update(network.pid, layers)
+  end
+
+  defp error_function(network, target_outputs) do
+    (network.output_layer.neurons
+    |> Stream.with_index
+    |> Enum.reduce(0, fn({neuron, index}, sum) ->
+         sum + 0.5 * :math.pow(Enum.at(target_outputs, index) - neuron.output, 2)
+       end)) / length(network.outupt_layer.neurons)
   end
 
   defp map_layers(input_layer, hidden_layers, output_layer) do

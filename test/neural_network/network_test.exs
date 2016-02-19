@@ -4,6 +4,11 @@ defmodule NeuralNetwork.NetworkTest do
 
   alias NeuralNetwork.{Network}
 
+  test "keep track of error with default" do
+    network = Network.start_link
+    assert network.error == 0
+  end
+
   test "Create network: input layer initialized" do
     network = Network.start_link([3,2,5])
     assert length(network.input_layer.neurons) == 3 + 1 # account for bias neuron being added
