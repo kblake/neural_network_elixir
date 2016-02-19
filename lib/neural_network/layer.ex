@@ -33,13 +33,25 @@ defmodule NeuralNetwork.Layer do
   end
 
   def set_neurons(layer, neurons) do
-    clear_neurons(layer)
-    add_neurons(layer, neurons)
+    layer
+    |> clear_neurons
+    |> add_neurons(neurons)
+  end
+
+  def train(layer, target_outputs \\ []) do
+    trained_neurons = layer.neurons
+    |> Stream.with_index
+    |> Enum.map(fn(tuple) ->
+      {neuron, index} = tuple
+      neuron |> Neuron.train(Enum.at(target_outputs, index))
+    end)
+
+    layer |> set_neurons(trained_neurons)
   end
 
   def connect(input_layer, output_layer) do
     unless contains_bias?(input_layer) do
-      add_neurons(input_layer, [Neuron.start_link(%{bias?: true})])
+      input_layer |> add_neurons([Neuron.start_link(%{bias?: true})])
     end
 
     for source_neuron <- get(input_layer.pid).neurons, target_neuron <- get(output_layer.pid).neurons do
@@ -47,9 +59,9 @@ defmodule NeuralNetwork.Layer do
     end
 
     updated_source_neurons = Enum.map(get(input_layer.pid).neurons, fn neuron -> Neuron.get(neuron.pid) end)
-    set_neurons(input_layer, updated_source_neurons)
+    input_layer |> set_neurons(updated_source_neurons)
     updated_output_neurons = Enum.map(get(output_layer.pid).neurons, fn neuron -> Neuron.get(neuron.pid) end)
-    set_neurons(output_layer, updated_output_neurons)
+    output_layer |> set_neurons(updated_output_neurons)
 
     {:ok, get(input_layer.pid), get(output_layer.pid)}
   end
@@ -65,13 +77,13 @@ defmodule NeuralNetwork.Layer do
     |> Stream.with_index
     |> Enum.map(fn(tuple) ->
          {neuron, index} = tuple
-         Neuron.activate(neuron, Enum.at(values, index))
+         neuron |> Neuron.activate(Enum.at(values, index))
        end)
 
-    set_neurons(layer, activated_neurons)
+    layer |> set_neurons(activated_neurons)
   end
 
   def neuron_outputs(layer) do
-    Enum.map(layer.neurons, fn neuron -> neuron.output end)
+    layer.neurons |> Enum.map(fn neuron -> neuron.output end)
   end
 end
