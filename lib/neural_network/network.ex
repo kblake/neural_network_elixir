@@ -18,7 +18,7 @@ defmodule NeuralNetwork.Network do
       hidden_layer_slice(connected_layers),
       List.last(connected_layers))
 
-    update(pid, layers)
+    pid |> update(layers)
   end
 
   def get(pid), do: Agent.get(pid, &(&1))
@@ -82,14 +82,14 @@ defmodule NeuralNetwork.Network do
       network.output_layer |> Layer.activate
     )
 
-    update(network.pid, layers)
+    network.pid |> update(layers)
   end
 
   # Back Propogate:
   # train layers in reverse
   def train(network, target_outputs) do
     output_layer = network.output_layer |> Layer.train(target_outputs)
-    update(network.pid, %{error: error_function(network, target_outputs)})
+    network.pid |> update(%{error: error_function(network, target_outputs)})
 
     hidden_layers = network.hidden_layers
                     |> Enum.reverse
@@ -104,7 +104,7 @@ defmodule NeuralNetwork.Network do
       output_layer
     )
 
-    update(network.pid, layers)
+    network.pid |> update(layers)
   end
 
   defp error_function(network, target_outputs) do
