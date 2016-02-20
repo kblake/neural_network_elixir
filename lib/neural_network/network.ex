@@ -91,7 +91,6 @@ defmodule NeuralNetwork.Network do
     output_layer = network.output_layer |> Layer.train(target_outputs)
     update(network.pid, %{error: error_function(network, target_outputs)})
 
-
     hidden_layers = network.hidden_layers
                     |> Enum.reverse
                     |> Enum.map(fn layer -> layer |> Layer.train end)
@@ -113,7 +112,7 @@ defmodule NeuralNetwork.Network do
     |> Stream.with_index
     |> Enum.reduce(0, fn({neuron, index}, sum) ->
          sum + 0.5 * :math.pow(Enum.at(target_outputs, index) - neuron.output, 2)
-       end)) / length(network.outupt_layer.neurons)
+       end)) / length(network.output_layer.neurons)
   end
 
   defp map_layers(input_layer, hidden_layers, output_layer) do
