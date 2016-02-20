@@ -23,8 +23,8 @@ defmodule NeuralNetwork.Neuron do
 
   def connect(source_neuron, target_neuron) do
     connection = Connection.connection_for(source_neuron, target_neuron)
-    Neuron.update(source_neuron.pid, %{outgoing: Neuron.get(source_neuron.pid).outgoing ++ [connection]})
-    Neuron.update(target_neuron.pid, %{incoming: Neuron.get(target_neuron.pid).incoming ++ [connection]})
+    source_neuron.pid |> Neuron.update(%{outgoing: Neuron.get(source_neuron.pid).outgoing ++ [connection]})
+    target_neuron.pid |> Neuron.update(%{incoming: Neuron.get(target_neuron.pid).incoming ++ [connection]})
     {:ok, Neuron.get(source_neuron.pid), Neuron.get(target_neuron.pid)}
   end
 
@@ -41,15 +41,14 @@ defmodule NeuralNetwork.Neuron do
   def activate(neuron, value \\ nil) do
     neuron = Neuron.get(neuron.pid) # just to make sure we are not getting a stale agent
 
-    if neuron.bias? do
-      Neuron.update(neuron.pid, %{output: 1})
+    fields = if neuron.bias? do
+      %{output: 1}
     else
       input = value || Enum.reduce(neuron.incoming, 0, sumf)
-      Neuron.update(neuron.pid, %{input: input, output: activation_function(input)})
+      %{input: input, output: activation_function(input)}
     end
 
-    # conveniently return updated neuron
-    Neuron.get(neuron.pid)
+    neuron.pid |> Neuron.update(fields)
   end
 
   def train(neuron, target_output \\ nil) do
@@ -61,7 +60,7 @@ defmodule NeuralNetwork.Neuron do
         # not simply difference in output
         # http://whiteboard.ping.se/MachineLearning/BackProp
 
-        Neuron.update(neuron.pid, %{delta: neuron.output - target_output})
+        neuron.pid |> Neuron.update(%{delta: neuron.output - target_output})
       else
         neuron |> calculate_outgoing_delta
       end
@@ -86,7 +85,7 @@ defmodule NeuralNetwork.Neuron do
       sum + Connection.get(connection.pid).weight * Neuron.get(connection.target_pid).delta
     end)
 
-    Neuron.update(neuron.pid, %{delta: delta})
+    neuron.pid |> Neuron.update(%{delta: delta})
   end
 
   defp update_outgoing_weights(neuron) do
