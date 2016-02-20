@@ -19,6 +19,6 @@ defmodule NeuralNetwork.Connection do
 
   def connection_for(source, target) do
     connection = start_link
-    update(connection.pid, %{source_pid: source.pid, target_pid: target.pid})
+    connection.pid |> update(%{source_pid: source.pid, target_pid: target.pid})
   end
 end

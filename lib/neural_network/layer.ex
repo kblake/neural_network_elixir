@@ -6,7 +6,7 @@ defmodule NeuralNetwork.Layer do
   def start_link(layer_fields \\ %{}) do
     {:ok, pid} = Agent.start_link(fn -> %Layer{} end)
     neurons = create_neurons(Map.get(layer_fields, :neuron_size))
-    update(pid, %{pid: pid, neurons: neurons})
+    pid |> update(%{pid: pid, neurons: neurons})
   end
 
   def get(pid), do: Agent.get(pid, &(&1))
@@ -18,18 +18,17 @@ defmodule NeuralNetwork.Layer do
 
   defp create_neurons(nil), do: []
   defp create_neurons(size) when size < 1, do: []
-
   defp create_neurons(size) when size > 0 do
     Enum.into 1..size, [], fn _ -> Neuron.start_link end
   end
 
   def add_neurons(layer, neurons) do
-    update(layer.pid, %{neurons: get(layer.pid).neurons ++ neurons})
+    layer.pid |> update(%{neurons: get(layer.pid).neurons ++ neurons})
     get(layer.pid)
   end
 
   def clear_neurons(layer) do
-    update(layer.pid, %{neurons: []})
+    layer.pid |> update(%{neurons: []})
   end
 
   def set_neurons(layer, neurons) do
