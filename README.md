@@ -1,4 +1,4 @@
-# NeuralNetwork
+# Neural Network
 
 **TODO: Add description**
 
