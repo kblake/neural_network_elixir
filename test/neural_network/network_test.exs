@@ -2,42 +2,46 @@ defmodule NeuralNetwork.NetworkTest do
   use ExUnit.Case
   doctest NeuralNetwork.Network
 
-  alias NeuralNetwork.{Network}
+  alias NeuralNetwork.{Layer, Network}
 
   test "keep track of error with default" do
-    network = Network.start_link
-    assert network.error == 0
+    pid = Network.start_link
+    assert Network.get(pid).error == 0
   end
 
   test "Create network: input layer initialized" do
-    network = Network.start_link([3,2,5])
-    assert length(network.input_layer.neurons) == 3 + 1 # account for bias neuron being added
+    pid = Network.start_link([3,2,5])
+    assert length((Network.get(pid).input_layer |> Layer.get).neurons) == 3 + 1 # account for bias neuron being added
   end
 
   test "create output layer" do
-    network = Network.start_link([3,2,5])
-    assert length(network.output_layer.neurons) == 5
+    pid = Network.start_link([3,2,5])
+    assert length((Network.get(pid).output_layer |> Layer.get).neurons) == 5
   end
 
   test "create hidden layer(s)" do
-    network = Network.start_link([3,2,6,5])
-    assert length(List.first(network.hidden_layers).neurons) == 2 + 1 # bias added
-    assert length(List.last(network.hidden_layers).neurons) == 6 + 1 # bias added
+    pid = Network.start_link([3,2,6,5])
+    hidden_neurons_one = (Network.get(pid).hidden_layers |> List.first |> Layer.get).neurons
+    hidden_neurons_two = (Network.get(pid).hidden_layers |> List.last |> Layer.get).neurons
+    assert length(hidden_neurons_one) == 2 + 1 # bias added
+    assert length(hidden_neurons_two) == 6 + 1 # bias added
   end
 
   test "update layers" do
-    networkA = Network.start_link([3,2,5])
-    networkB = Network.start_link([1,3,2])
+    pidA = Network.start_link([3,2,5])
+    pidB = Network.start_link([1,3,2])
 
     layers = %{
-      input_layer: networkB.input_layer,
-      output_layer: networkB.output_layer,
-      hidden_layers: networkB.hidden_layers
+      input_layer:   Network.get(pidB).input_layer,
+      output_layer:  Network.get(pidB).output_layer,
+      hidden_layers: Network.get(pidB).hidden_layers
     }
-    networkA = Network.update(networkA.pid, layers)
 
-    assert length(networkA.input_layer.neurons) == 2 # bias added
-    assert length(networkA.output_layer.neurons) == 2
-    assert length(List.first(networkA.hidden_layers).neurons) == 3 + 1 # bias added
+    Network.update(pidA, layers)
+
+    assert length((Network.get(pidA).input_layer |> Layer.get).neurons) == 2
+    assert length((Network.get(pidA).output_layer |> Layer.get).neurons) == 2
+    hidden_neurons_one = (Network.get(pidA).hidden_layers |> List.first |> Layer.get).neurons
+    assert length(hidden_neurons_one) == 4
   end
 end

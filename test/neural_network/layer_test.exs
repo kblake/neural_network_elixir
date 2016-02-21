@@ -5,84 +5,83 @@ defmodule NeuralNetwork.LayerTest do
   alias NeuralNetwork.{Neuron, Layer}
 
   test "has default values using an agent" do
-    layer = Layer.start_link
-    assert layer.neurons == []
+    layer_pid = Layer.start_link
+    assert Layer.get(layer_pid).neurons == []
   end
 
   test "create new layer with neuron size" do
-    layer = Layer.start_link(%{neuron_size: 3})
+    layer_pid = Layer.start_link(%{neuron_size: 3})
+    layer = Layer.get(layer_pid)
     assert length(layer.neurons) == 3
-    assert is_map(List.first(layer.neurons))
+    assert is_pid(List.first(layer.neurons))
   end
 
   test "create new layer with empty neuron list when size is negative" do
-    layer = Layer.start_link(%{neuron_size: -3})
+    layer_pid = Layer.start_link(%{neuron_size: -3})
+    layer = Layer.get(layer_pid)
     assert length(layer.neurons) == 0
   end
 
   test "connect layers: no outgoing or incoming neurons connected" do
-    input_layer  = Layer.start_link(%{neuron_size: 2})
-    output_layer = Layer.start_link(%{neuron_size: 2})
+    input_layer_pid  = Layer.start_link(%{neuron_size: 2})
+    output_layer_pid = Layer.start_link(%{neuron_size: 2})
 
-    for neuron <- input_layer.neurons do
-      assert length(neuron.outgoing) == 0
-      assert length(neuron.incoming) == 0
+    for neuron <- Layer.get(input_layer_pid).neurons do
+      assert length(Neuron.get(neuron).outgoing) == 0
+      assert length(Neuron.get(neuron).incoming) == 0
     end
 
-    for neuron <- output_layer.neurons do
-      assert length(neuron.outgoing) == 0
-      assert length(neuron.incoming) == 0
+    for neuron <- Layer.get(output_layer_pid).neurons do
+      assert length(Neuron.get(neuron).outgoing) == 0
+      assert length(Neuron.get(neuron).incoming) == 0
     end
   end
 
   test "connect layers: input layer's outgoing neurons are stored" do
-    input_layer  = Layer.start_link(%{neuron_size: 2})
-    output_layer = Layer.start_link(%{neuron_size: 2})
-    {:ok, input_layer, output_layer} = Layer.connect(input_layer, output_layer)
+    input_layer_pid  = Layer.start_link(%{neuron_size: 2})
+    output_layer_pid = Layer.start_link(%{neuron_size: 2})
+    Layer.connect(input_layer_pid, output_layer_pid)
 
 
-    for neuron <- input_layer.neurons do
-      assert length(neuron.outgoing) == 2
-      assert length(neuron.incoming) == 0
-      assert Enum.map(neuron.outgoing, fn connection -> Neuron.get(connection.target_pid) end) == output_layer.neurons
+    for neuron <- Layer.get(input_layer_pid).neurons do
+      assert length(Neuron.get(neuron).outgoing) == 2
+      assert length(Neuron.get(neuron).incoming) == 0
+
+      connection_target_ids = Enum.map(Neuron.get(neuron).outgoing, fn connection -> connection.target_pid end)
+      assert connection_target_ids == Layer.get(output_layer_pid).neurons
     end
   end
 
   test "connect layers: output layer's incoming neurons + bias neuron are stored" do
-    input_layer  = Layer.start_link(%{neuron_size: 2})
-    output_layer = Layer.start_link(%{neuron_size: 2})
-    {:ok, input_layer, output_layer} = Layer.connect(input_layer, output_layer)
+    input_layer_pid  = Layer.start_link(%{neuron_size: 2})
+    output_layer_pid = Layer.start_link(%{neuron_size: 2})
+    Layer.connect(input_layer_pid, output_layer_pid)
 
-    for neuron <- output_layer.neurons do
-      assert length(neuron.incoming) == 3
-      source_neurons = Enum.map neuron.incoming, fn(connection) -> Neuron.get(connection.source_pid) end
+    for neuron <- Layer.get(output_layer_pid).neurons do
+      assert length(Neuron.get(neuron).incoming) == 3
+      source_neurons = Enum.map Neuron.get(neuron).incoming, fn(connection) -> Neuron.get(connection.source_pid) end
       assert Enum.any?(source_neurons, fn(source_neuron) -> source_neuron.bias? end)
-      assert length(neuron.outgoing) == 0
-      assert Enum.map(neuron.incoming, fn connection -> Neuron.get(connection.source_pid) end) == input_layer.neurons
+      assert length(Neuron.get(neuron).outgoing) == 0
+      assert Enum.map(Neuron.get(neuron).incoming, fn connection -> connection.source_pid end) == Layer.get(input_layer_pid).neurons
     end
   end
 
   test "activate a layer: when values are nil" do
-    layer  = Layer.start_link(%{neuron_size: 2})
-    layer = Layer.activate(layer)
+    layer_pid  = Layer.start_link(%{neuron_size: 2})
+    Layer.activate(layer_pid)
 
-    for neuron <- layer.neurons do
-      assert neuron.output == 0.5
+    for neuron <- Layer.get(layer_pid).neurons do
+      assert Neuron.get(neuron).output == 0.5
     end
   end
 
   test "activate a layer: with values" do
-    layer  = Layer.start_link(%{neuron_size: 2})
-    layer = Layer.activate(layer, [1,2])
+    layer_pid  = Layer.start_link(%{neuron_size: 2})
+    layer_pid  |> Layer.activate([1,2])
 
-    for neuron <- layer.neurons do
+    for neuron_pid <- Layer.get(layer_pid).neurons do
+      neuron = Neuron.get(neuron_pid)
       assert neuron.output >= 0.5 && neuron.output <= 1.0
     end
-  end
-
-  test "mapped outputs for layer neurons" do
-    layer  = Layer.start_link(%{neuron_size: 2})
-    layer = Layer.activate(layer, [1,2])
-    assert Layer.neuron_outputs(layer) == [0.7310585786300049, 0.8807970779778823]
   end
 end

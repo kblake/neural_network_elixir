@@ -1,18 +1,17 @@
 defmodule NeuralNetwork.Trainer do
   alias NeuralNetwork.{Network}
 
-  def train(network, data, options \\ %{}) do
+  def train(network_pid, data, options \\ %{}) do
     epochs      = options.epochs
     log_freqs   = options.log_freqs
     data_length = length(data)
 
     for epoch <- 0..epochs do
       average_error = Enum.reduce(data, 0, fn sample, sum ->
-        network = network
-        |> Network.activate(sample.input)
-        |> Network.train(sample.output)
+        Network.get(network_pid) |> Network.activate(sample.input)
+        Network.get(network_pid) |> Network.train(sample.output)
 
-        sum + network.error/data_length
+        sum + Network.get(network_pid).error/data_length
       end)
 
       if rem(epoch, log_freqs) == 0 || epoch + 1 == epochs do

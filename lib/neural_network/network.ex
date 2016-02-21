@@ -1,5 +1,5 @@
 defmodule NeuralNetwork.Network do
-  alias NeuralNetwork.{Layer, Network}
+  alias NeuralNetwork.{Neuron, Layer, Network}
 
   defstruct pid: nil, input_layer: %{}, output_layer: %{}, hidden_layers: [], error: 0
 
@@ -11,14 +11,9 @@ defmodule NeuralNetwork.Network do
       hidden_neurons(layer_sizes),
       output_neurons(layer_sizes))
 
-    connected_layers = layers |> connect_layers
-
-    layers = map_layers(
-      List.first(connected_layers),
-      hidden_layer_slice(connected_layers),
-      List.last(connected_layers))
-
     pid |> update(layers)
+    pid |> connect_layers
+    pid
   end
 
   def get(pid), do: Agent.get(pid, &(&1))
@@ -26,7 +21,6 @@ defmodule NeuralNetwork.Network do
   def update(pid, fields) do
     fields = Map.merge(fields, %{pid: pid}) # preserve the pid!!
     Agent.update(pid, fn network -> Map.merge(network, fields) end)
-    get(pid)
   end
 
   defp input_neurons(layer_sizes) do
@@ -52,8 +46,8 @@ defmodule NeuralNetwork.Network do
     |> Enum.slice(1..length(layer_sizes) - 2)
   end
 
-  defp connect_layers(layers) do
-    layers = layers |> flatten_layers
+  defp connect_layers(pid) do
+    layers = Network.get(pid) |> flatten_layers
 
     layers
     |> Stream.with_index
@@ -65,54 +59,42 @@ defmodule NeuralNetwork.Network do
         Layer.connect(layer, Enum.at(layers, next_index))
       end
     end)
-
-    Enum.map(layers, fn layer -> Layer.get(layer.pid) end)
   end
 
-  defp flatten_layers(layers) do
-    [layers.input_layer] ++ layers.hidden_layers ++ [layers.output_layer]
+  defp flatten_layers(network) do
+    [network.input_layer] ++ network.hidden_layers ++ [network.output_layer]
   end
 
   def activate(network, input_values) do
-    layers = map_layers(
-      network.input_layer |> Layer.activate(input_values),
-      Enum.map(network.hidden_layers, fn hidden_layer ->
-        hidden_layer |> Layer.activate
-      end),
-      network.output_layer |> Layer.activate
-    )
+    network.input_layer |> Layer.activate(input_values)
 
-    network.pid |> update(layers)
+    Enum.map(network.hidden_layers, fn hidden_layer ->
+      hidden_layer |> Layer.activate
+    end)
+
+    network.output_layer |> Layer.activate
   end
 
   # Back Propogate:
   # train layers in reverse
   def train(network, target_outputs) do
-    output_layer = network.output_layer |> Layer.train(target_outputs)
+    Layer.get(network.output_layer) |> Layer.train(target_outputs)
     network.pid |> update(%{error: error_function(network, target_outputs)})
 
-    hidden_layers = network.hidden_layers
-                    |> Enum.reverse
-                    |> Enum.map(fn layer -> layer |> Layer.train end)
+    network.hidden_layers
+    |> Enum.reverse
+    |> Enum.each(fn layer -> layer |> Layer.train end)
 
 
-    input_layer = network.input_layer |> Layer.train(target_outputs)
-
-    layers = map_layers(
-      input_layer,
-      hidden_layers,
-      output_layer
-    )
-
-    network.pid |> update(layers)
+    input_layer = Layer.get(network.input_layer) |> Layer.train(target_outputs)
   end
 
   defp error_function(network, target_outputs) do
-    (network.output_layer.neurons
+    (Layer.get(network.output_layer).neurons
     |> Stream.with_index
     |> Enum.reduce(0, fn({neuron, index}, sum) ->
-         sum + 0.5 * :math.pow(Enum.at(target_outputs, index) - neuron.output, 2)
-       end)) / length(network.output_layer.neurons)
+         sum + 0.5 * :math.pow(Enum.at(target_outputs, index) - Neuron.get(neuron).output, 2)
+       end)) / length(Layer.get(network.output_layer).neurons)
   end
 
   defp map_layers(input_layer, hidden_layers, output_layer) do

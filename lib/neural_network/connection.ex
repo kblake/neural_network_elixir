@@ -15,10 +15,8 @@ defmodule NeuralNetwork.Connection do
     get(pid)
   end
 
-  def stop(pid), do: Process.exit(Process.whereis(pid), :shutdown)
-
-  def connection_for(source, target) do
+  def connection_for(source_pid, target_pid) do
     connection = start_link
-    connection.pid |> update(%{source_pid: source.pid, target_pid: target.pid})
+    connection.pid |> update(%{source_pid: source_pid, target_pid: target_pid})
   end
 end
