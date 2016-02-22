@@ -88,25 +88,25 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#activate/2">activate(layer, values \\ nil)</a>
+    <a href="#activate/2">activate(layer_pid, values \\ nil)</a>
   </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#add_neurons/2">add_neurons(layer, neurons)</a>
+    <a href="#add_neurons/2">add_neurons(layer_pid, neurons)</a>
   </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#clear_neurons/1">clear_neurons(layer)</a>
+    <a href="#clear_neurons/1">clear_neurons(layer_pid)</a>
   </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#connect/2">connect(input_layer, output_layer)</a>
+    <a href="#connect/2">connect(input_layer_pid, output_layer_pid)</a>
   </div>
   
 </div>
@@ -118,13 +118,7 @@
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#neuron_outputs/1">neuron_outputs(layer)</a>
-  </div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#set_neurons/2">set_neurons(layer, neurons)</a>
+    <a href="#set_neurons/2">set_neurons(layer_pid, neurons)</a>
   </div>
   
 </div>
@@ -172,9 +166,9 @@
     <a href="#activate/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">activate(layer, values \\ nil)</span>
+    <span class="signature">activate(layer_pid, values \\ nil)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L72" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L67" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -189,9 +183,9 @@
     <a href="#add_neurons/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">add_neurons(layer, neurons)</span>
+    <span class="signature">add_neurons(layer_pid, neurons)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L25" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L26" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -206,7 +200,7 @@
     <a href="#clear_neurons/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">clear_neurons(layer)</span>
+    <span class="signature">clear_neurons(layer_pid)</span>
       
       <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L30" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
@@ -223,9 +217,9 @@
     <a href="#connect/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">connect(input_layer, output_layer)</span>
+    <span class="signature">connect(input_layer_pid, output_layer_pid)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L51" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L49" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -242,24 +236,7 @@
     </a>
     <span class="signature">get(pid)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L12" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
-     </a>
-    
-  </div>
-  
-  <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="neuron_outputs/1">
-  <div class="detail-header">
-    <a href="#neuron_outputs/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">neuron_outputs(layer)</span>
-      
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L85" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L14" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -274,7 +251,7 @@
     <a href="#set_neurons/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">set_neurons(layer, neurons)</span>
+    <span class="signature">set_neurons(layer_pid, neurons)</span>
       
       <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L34" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
@@ -327,7 +304,7 @@
     </a>
     <span class="signature">update(pid, fields)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L14" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L16" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
