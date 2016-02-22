@@ -88,7 +88,6 @@ defmodule NeuralNetwork.Network do
     |> Enum.reverse
     |> Enum.each(fn layer -> layer |> Layer.train end)
 
-
     input_layer = Layer.get(network.input_layer) |> Layer.train(target_outputs)
   end
 
