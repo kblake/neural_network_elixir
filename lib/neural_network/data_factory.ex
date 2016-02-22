@@ -27,21 +27,10 @@ defmodule NeuralNetwork.DataFactory do
     %{input: [1,1], output: [0]}
   ]
 
-  def or_gate do
-    @or_gate
-  end
-
-  def and_gate do
-    @and_gate
-  end
-
-  def xor_gate do
-    @xor_gate
-  end
-
-  def nand_gate do
-    @nand_gate
-  end
+  def or_gate,   do: @or_gate
+  def and_gate,  do: @and_gate
+  def xor_gate,  do: @xor_gate
+  def nand_gate, do: @nand_gate
 
   def gate_for(name) do
     {:ok, data} = Map.fetch(gates, String.to_atom(name))
@@ -63,9 +52,5 @@ defmodule NeuralNetwork.DataFactory do
 
   def gate_exists?(name) do
     Map.has_key? gates, String.to_atom(name)
-  end
-
-  def all do
-    Map.values gates
   end
 end

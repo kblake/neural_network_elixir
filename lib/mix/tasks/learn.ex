@@ -5,6 +5,7 @@ defmodule Mix.Tasks.Learn do
 
   def run(args) do
     gate_name = args |> List.first
+    IO.puts ""
 
     if NeuralNetwork.DataFactory.gate_exists?(gate_name) do
       {:ok, network_pid} = NeuralNetwork.Network.start_link([2,1])
@@ -16,5 +17,6 @@ defmodule Mix.Tasks.Learn do
       IO.puts "Cannot learn: '#{gate_name}'. Try one of these instead: #{NeuralNetwork.DataFactory.gate_names}"
     end
 
+    IO.puts ""
   end
 end
