@@ -33,7 +33,7 @@ Run tests
 
     $ mix test
     
-###Huge Props and inspiration
+###Huge props
 
 * Levi Thompson [https://github.com/levithomason](https://github.com/levithomason)
 * Dev Coop group for support [http://www.meetup.com/dev-coop/](http://www.meetup.com/dev-coop/)
