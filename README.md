@@ -14,7 +14,8 @@ Run the trainer and see the network learn using OR GATE data
 
 You should see output like this:
     
-    $ Epoch: 0   Error: 0.0978034950879825143
+    OR gate learning *********************************************
+    Epoch: 0   Error: 0.0978034950879825143
     Epoch: 1000   Error: 0.0177645755625382047
     Epoch: 2000   Error: 0.0065019384961036274
     Epoch: 3000   Error: 0.0032527653252166144
@@ -26,8 +27,32 @@ You should see output like this:
     Epoch: 9000   Error: 0.0004028528701046857
     Epoch: 9999   Error: 0.0003270377487769315
     Epoch: 10000   Error: 0.0003269728572615501
+    **************************************************************
 
-Valid options are: `or`, `and`, `xor`, `nand`
+Run the trainer and see the network learn using IRIS FLOWER GATE data
+
+    $ mix learn iris_flower
+
+You should see output like this:
+
+    IRIS_FLOWER gate learning *********************************************
+    Epoch: 0   Error: 0.0164425788515711185
+    Epoch: 1000   Error: 0.027344153205250403
+    Epoch: 2000   Error: 0.0265533867778006451
+    Epoch: 3000   Error: 0.0266624718167679346
+    Epoch: 4000   Error: 0.0268164947904966262
+    Epoch: 5000   Error: 0.026857493502782933
+    Epoch: 6000   Error: 0.026794287038049043
+    Epoch: 7000   Error: 0.0266556275054049274
+    Epoch: 8000   Error: 0.0264642981722699525
+    Epoch: 9000   Error: 0.0262360305030914023
+    Epoch: 9999   Error: 0.025981881761432242
+    Epoch: 10000   Error: 0.025981617016649871
+    **************************************************************
+
+
+Valid options are: `or`, `and`, `xor`, `nand`, `iris_flower`
+
 
 Run tests
 
