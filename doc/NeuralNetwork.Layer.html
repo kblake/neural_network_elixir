@@ -70,6 +70,12 @@
       </h1>
 
       
+        <section id="moduledoc" class="docstring">
+          <p>List of neurons. The are used to apply behaviors on sets of neurons.
+A network is made up layers (which are made up of neurons).</p>
+
+        </section>
+      
 
       
         <section id="summary" class="details-list">
@@ -91,11 +97,17 @@
     <a href="#activate/2">activate(layer_pid, values \\ nil)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Activate all neurons in the layer with a list of values</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#add_neurons/2">add_neurons(layer_pid, neurons)</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Add neurons to the layer</p>
+</div>
   
 </div>
 <div class="summary-row">
@@ -103,11 +115,17 @@
     <a href="#clear_neurons/1">clear_neurons(layer_pid)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Empty out the layer of all neurons</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#connect/2">connect(input_layer_pid, output_layer_pid)</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Connect every neuron in the input layer to every neuron in the target layer</p>
+</div>
   
 </div>
 <div class="summary-row">
@@ -115,11 +133,17 @@
     <a href="#get/1">get(pid)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Return a layer by pid</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#set_neurons/2">set_neurons(layer_pid, neurons)</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Clear and set neurons in the layer with a given list of neurons</p>
+</div>
   
 </div>
 <div class="summary-row">
@@ -133,11 +157,17 @@
     <a href="#train/2">train(layer, target_outputs \\ [])</a>
   </div>
   
+    <div class="summary-synopsis"><p>Update all deltas for each neuron</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#update/2">update(pid, fields)</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Update a layer by passing in a pid and a map of fields to update</p>
+</div>
   
 </div>
 
@@ -168,14 +198,15 @@
     </a>
     <span class="signature">activate(layer_pid, values \\ nil)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L67" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L95" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Activate all neurons in the layer with a list of values.</p>
+
   </section>
 </div>
 <div class="detail" id="add_neurons/2">
@@ -185,14 +216,15 @@
     </a>
     <span class="signature">add_neurons(layer_pid, neurons)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L26" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L40" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Add neurons to the layer.</p>
+
   </section>
 </div>
 <div class="detail" id="clear_neurons/1">
@@ -202,14 +234,15 @@
     </a>
     <span class="signature">clear_neurons(layer_pid)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L30" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L47" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Empty out the layer of all neurons.</p>
+
   </section>
 </div>
 <div class="detail" id="connect/2">
@@ -219,14 +252,15 @@
     </a>
     <span class="signature">connect(input_layer_pid, output_layer_pid)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L49" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L75" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Connect every neuron in the input layer to every neuron in the target layer.</p>
+
   </section>
 </div>
 <div class="detail" id="get/1">
@@ -236,14 +270,15 @@
     </a>
     <span class="signature">get(pid)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L14" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L22" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Return a layer by pid.</p>
+
   </section>
 </div>
 <div class="detail" id="set_neurons/2">
@@ -253,14 +288,15 @@
     </a>
     <span class="signature">set_neurons(layer_pid, neurons)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L34" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L54" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Clear and set neurons in the layer with a given list of neurons.</p>
+
   </section>
 </div>
 <div class="detail" id="start_link/1">
@@ -270,7 +306,7 @@
     </a>
     <span class="signature">start_link(layer_fields \\ %{})</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L6" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L11" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -287,14 +323,15 @@
     </a>
     <span class="signature">train(layer, target_outputs \\ [])</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L40" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L63" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Update all deltas for each neuron.</p>
+
   </section>
 </div>
 <div class="detail" id="update/2">
@@ -304,14 +341,15 @@
     </a>
     <span class="signature">update(pid, fields)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L16" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/layer.ex#L27" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Update a layer by passing in a pid and a map of fields to update.</p>
+
   </section>
 </div>
 

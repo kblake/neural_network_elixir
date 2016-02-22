@@ -70,6 +70,13 @@
       </h1>
 
       
+        <section id="moduledoc" class="docstring">
+          <p>Neurons communciate via connections.
+Connection weights determine the network output and are updated while training occurs.
+Network capability is represented in the network matrix of weight values.</p>
+
+        </section>
+      
 
       
         <section id="summary" class="details-list">
@@ -91,11 +98,18 @@
     <a href="#connection_for/2">connection_for(source_pid, target_pid)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Convenience method that takes two neuron pids, creates a connection,
+and then returns connection pid</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#get/1">get(pid)</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Return connection by PID</p>
+</div>
   
 </div>
 <div class="summary-row">
@@ -138,14 +152,16 @@
     </a>
     <span class="signature">connection_for(source_pid, target_pid)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/connection.ex#L19" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/connection.ex#L31" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Convenience method that takes two neuron pids, creates a connection,
+and then returns connection pid.</p>
+
   </section>
 </div>
 <div class="detail" id="get/1">
@@ -155,14 +171,15 @@
     </a>
     <span class="signature">get(pid)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/connection.ex#L13" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/connection.ex#L21" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Return connection by PID</p>
+
   </section>
 </div>
 <div class="detail" id="start_link/1">
@@ -172,7 +189,7 @@
     </a>
     <span class="signature">start_link(connection_fields \\ %{})</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/connection.ex#L6" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/connection.ex#L11" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -189,7 +206,7 @@
     </a>
     <span class="signature">update(pid, fields)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/connection.ex#L15" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/connection.ex#L23" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     

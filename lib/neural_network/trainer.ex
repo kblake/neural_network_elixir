@@ -1,4 +1,8 @@
 defmodule NeuralNetwork.Trainer do
+  @moduledoc """
+  Runs a network as classified by data its given.
+  """
+
   alias NeuralNetwork.{Network}
 
   def train(network_pid, data, options \\ %{}) do

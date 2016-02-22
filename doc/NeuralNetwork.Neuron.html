@@ -70,6 +70,13 @@
       </h1>
 
       
+        <section id="moduledoc" class="docstring">
+          <p>A neuron makes up a network. It’s purpose is to sum its inputs
+and compute an output. During training the neurons adjust weights
+of its outgoing connections to other neurons.</p>
+
+        </section>
+      
 
       
         <section id="summary" class="details-list">
@@ -91,11 +98,20 @@
     <a href="#activate/2">activate(neuron_pid, value \\ nil)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Activate a neuron. Set the input value and compute the output
+Input neuron: output will always equal their input value
+Bias neuron: output is always 1.
+Other neurons: will squash their input value to compute output</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#activation_function/1">activation_function(input)</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Sigmoid function. See more at: <a href="https://en.wikipedia.org/wiki/Sigmoid_function">https://en.wikipedia.org/wiki/Sigmoid_function</a></p>
+</div>
   
 </div>
 <div class="summary-row">
@@ -103,11 +119,17 @@
     <a href="#connect/2">connect(source_neuron_pid, target_neuron_pid)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Connect two neurons</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#get/1">get(pid)</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Lookup and return a neuron</p>
+</div>
   
 </div>
 <div class="summary-row">
@@ -121,17 +143,34 @@
     <a href="#start_link/1">start_link(neuron_fields \\ %{})</a>
   </div>
   
+    <div class="summary-synopsis"><p>Create a neuron agent</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#train/2">train(neuron_pid, target_output \\ nil)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Backprop using the delta.
+Set the neuron’s delta value</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#update/2">update(pid, neuron_fields)</a>
   </div>
+  
+    <div class="summary-synopsis"><h2>Pass in the pid, and a map to update values of a neuron</h2>
+<pre><code class="iex elixir">iex&gt; {:ok, pid} = NeuralNetwork.Neuron.start_link
+...&gt; NeuralNetwork.Neuron.update(pid, %{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
+...&gt; neuron = NeuralNetwork.Neuron.get(pid)
+...&gt; neuron.input
+1
+...&gt; neuron.output
+2</code></pre>
+</div>
   
 </div>
 
@@ -162,14 +201,18 @@
     </a>
     <span class="signature">activate(neuron_pid, value \\ nil)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L42" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L81" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Activate a neuron. Set the input value and compute the output
+Input neuron: output will always equal their input value
+Bias neuron: output is always 1.
+Other neurons: will squash their input value to compute output</p>
+
   </section>
 </div>
 <div class="detail" id="activation_function/1">
@@ -179,14 +222,18 @@
     </a>
     <span class="signature">activation_function(input)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L31" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L64" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Sigmoid function. See more at: <a href="https://en.wikipedia.org/wiki/Sigmoid_function">https://en.wikipedia.org/wiki/Sigmoid_function</a></p>
+<h2>Example</h2>
+<pre><code class="iex elixir">iex&gt; NeuralNetwork.Neuron.activation_function(1)
+0.7310585786300049</code></pre>
+
   </section>
 </div>
 <div class="detail" id="connect/2">
@@ -196,14 +243,15 @@
     </a>
     <span class="signature">connect(source_neuron_pid, target_neuron_pid)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L25" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L50" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Connect two neurons</p>
+
   </section>
 </div>
 <div class="detail" id="get/1">
@@ -213,14 +261,15 @@
     </a>
     <span class="signature">get(pid)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L23" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L45" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Lookup and return a neuron</p>
+
   </section>
 </div>
 <div class="detail" id="learning_rate/0">
@@ -230,7 +279,7 @@
     </a>
     <span class="signature">learning_rate()</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L8" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L14" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -247,14 +296,15 @@
     </a>
     <span class="signature">start_link(neuron_fields \\ %{})</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L12" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L21" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Create a neuron agent</p>
+
   </section>
 </div>
 <div class="detail" id="train/2">
@@ -264,14 +314,16 @@
     </a>
     <span class="signature">train(neuron_pid, target_output \\ nil)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L55" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L98" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Backprop using the delta.
+Set the neuron’s delta value.</p>
+
   </section>
 </div>
 <div class="detail" id="update/2">
@@ -281,14 +333,22 @@
     </a>
     <span class="signature">update(pid, neuron_fields)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L19" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L38" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <h2>Pass in the pid, and a map to update values of a neuron</h2>
+<pre><code class="iex elixir">iex&gt; {:ok, pid} = NeuralNetwork.Neuron.start_link
+...&gt; NeuralNetwork.Neuron.update(pid, %{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
+...&gt; neuron = NeuralNetwork.Neuron.get(pid)
+...&gt; neuron.input
+1
+...&gt; neuron.output
+2</code></pre>
+
   </section>
 </div>
 

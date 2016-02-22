@@ -1,4 +1,9 @@
 defmodule NeuralNetwork.DataFactory do
+  @moduledoc """
+  Factory of data sets for the network to learn.
+  Data sets: or, and, xor, nand
+  """
+
   @or_gate [
     %{input: [0,0], output: [0]},
     %{input: [0,1], output: [1]},

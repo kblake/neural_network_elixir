@@ -1,4 +1,10 @@
 defmodule NeuralNetwork.Neuron do
+  @moduledoc """
+  A neuron makes up a network. It's purpose is to sum its inputs
+  and compute an output. During training the neurons adjust weights
+  of its outgoing connections to other neurons.
+  """
+
   alias NeuralNetwork.{Neuron, Connection}
 
   defstruct pid: "", input: 0, output: 0, incoming: [], outgoing: [], bias?: false, delta: 0
@@ -9,6 +15,9 @@ defmodule NeuralNetwork.Neuron do
     @learning_rate
   end
 
+  @doc """
+  Create a neuron agent
+  """
   def start_link(neuron_fields \\ %{}) do
     {:ok, pid} = Agent.start_link(fn -> %Neuron{} end)
     update(pid, Map.merge(neuron_fields, %{pid: pid}))
@@ -16,18 +25,42 @@ defmodule NeuralNetwork.Neuron do
     {:ok, pid}
   end
 
+  @doc """
+  ## Pass in the pid, and a map to update values of a neuron
+      iex> {:ok, pid} = NeuralNetwork.Neuron.start_link
+      ...> NeuralNetwork.Neuron.update(pid, %{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
+      ...> neuron = NeuralNetwork.Neuron.get(pid)
+      ...> neuron.input
+      1
+      ...> neuron.output
+      2
+  """
   def update(pid, neuron_fields) do
     Agent.update(pid, fn neuron -> Map.merge(neuron, neuron_fields) end)
   end
 
+  @doc """
+  Lookup and return a neuron
+  """
   def get(pid), do: Agent.get(pid, &(&1))
 
+  @doc """
+  Connect two neurons
+  """
   def connect(source_neuron_pid, target_neuron_pid) do
     {:ok, connection_pid} = Connection.connection_for(source_neuron_pid, target_neuron_pid)
     source_neuron_pid |> update(%{outgoing: get(source_neuron_pid).outgoing ++ [connection_pid]})
     target_neuron_pid |> update(%{incoming: get(target_neuron_pid).incoming ++ [connection_pid]})
   end
 
+  @doc """
+  Sigmoid function. See more at: https://en.wikipedia.org/wiki/Sigmoid_function
+
+  ## Example
+
+      iex> NeuralNetwork.Neuron.activation_function(1)
+      0.7310585786300049
+  """
   def activation_function(input) do
     1 / (1 + :math.exp(-input))
   end
@@ -39,6 +72,12 @@ defmodule NeuralNetwork.Neuron do
     end
   end
 
+  @doc """
+  Activate a neuron. Set the input value and compute the output
+  Input neuron: output will always equal their input value
+  Bias neuron: output is always 1.
+  Other neurons: will squash their input value to compute output
+  """
   def activate(neuron_pid, value \\ nil) do
     neuron = get(neuron_pid) # just to make sure we are not getting a stale agent
 
@@ -52,6 +91,10 @@ defmodule NeuralNetwork.Neuron do
     neuron_pid |> update(fields)
   end
 
+  @doc """
+  Backprop using the delta.
+  Set the neuron's delta value.
+  """
   def train(neuron_pid, target_output \\ nil) do
     neuron = get(neuron_pid) # just to make sure we are not getting a stale agent
 

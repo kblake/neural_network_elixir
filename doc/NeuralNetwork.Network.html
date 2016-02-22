@@ -70,6 +70,11 @@
       </h1>
 
       
+        <section id="moduledoc" class="docstring">
+          <p>Contains layers which makes up a matrix of neurons.</p>
+
+        </section>
+      
 
       
         <section id="summary" class="details-list">
@@ -91,11 +96,17 @@
     <a href="#activate/2">activate(network, input_values)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Activate the network given list of input values</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#get/1">get(pid)</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Return the network by pid</p>
+</div>
   
 </div>
 <div class="summary-row">
@@ -103,17 +114,30 @@
     <a href="#start_link/1">start_link(layer_sizes \\ [])</a>
   </div>
   
+    <div class="summary-synopsis"><p>Pass in layer sizes which will generate the layers for the network.
+The first number represents the number of neurons in the input layer.
+The last number represents the number of neurons in the output layer.
+[Optionally] The middle numbers represent the number of neurons for hidden layers</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#train/2">train(network, target_outputs)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Set the network error and output layer’s deltas propagate them
+backward through the network</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#update/2">update(pid, fields)</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Update the network layers</p>
+</div>
   
 </div>
 
@@ -144,14 +168,15 @@
     </a>
     <span class="signature">activate(network, input_values)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L71" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L91" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Activate the network given list of input values.</p>
+
   </section>
 </div>
 <div class="detail" id="get/1">
@@ -161,14 +186,15 @@
     </a>
     <span class="signature">get(pid)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L19" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L33" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Return the network by pid.</p>
+
   </section>
 </div>
 <div class="detail" id="start_link/1">
@@ -178,14 +204,18 @@
     </a>
     <span class="signature">start_link(layer_sizes \\ [])</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L6" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L16" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Pass in layer sizes which will generate the layers for the network.
+The first number represents the number of neurons in the input layer.
+The last number represents the number of neurons in the output layer.
+[Optionally] The middle numbers represent the number of neurons for hidden layers.</p>
+
   </section>
 </div>
 <div class="detail" id="train/2">
@@ -195,14 +225,17 @@
     </a>
     <span class="signature">train(network, target_outputs)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L83" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L107" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Set the network error and output layer’s deltas propagate them
+backward through the network.</p>
+<p>The input layer is skipped (no use for deltas).</p>
+
   </section>
 </div>
 <div class="detail" id="update/2">
@@ -212,14 +245,15 @@
     </a>
     <span class="signature">update(pid, fields)</span>
       
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L21" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L38" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    
+    <p>Update the network layers.</p>
+
   </section>
 </div>
 
