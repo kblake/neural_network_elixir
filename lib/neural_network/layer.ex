@@ -7,7 +7,8 @@ defmodule NeuralNetwork.Layer do
     {:ok, pid} = Agent.start_link(fn -> %Layer{} end)
     neurons = create_neurons(Map.get(layer_fields, :neuron_size))
     pid |> update(%{pid: pid, neurons: neurons})
-    pid
+
+    {:ok, pid}
   end
 
   def get(pid), do: Agent.get(pid, &(&1))
@@ -19,7 +20,7 @@ defmodule NeuralNetwork.Layer do
   defp create_neurons(nil), do: []
   defp create_neurons(size) when size < 1, do: []
   defp create_neurons(size) when size > 0 do
-    Enum.into 1..size, [], fn _ -> Neuron.start_link end
+    Enum.into 1..size, [], fn _ -> {:ok, pid} = Neuron.start_link; pid end
   end
 
   def add_neurons(layer_pid, neurons) do
@@ -50,7 +51,8 @@ defmodule NeuralNetwork.Layer do
     output_layer = get(output_layer_pid)
 
     unless contains_bias?(input_layer) do
-      input_layer_pid |> add_neurons([Neuron.start_link(%{bias?: true})])
+      {:ok, pid} = Neuron.start_link(%{bias?: true})
+      input_layer_pid |> add_neurons([pid])
     end
 
     for source_neuron <- get(input_layer_pid).neurons, target_neuron <- get(output_layer_pid).neurons do

@@ -6,17 +6,20 @@ defmodule NeuralNetwork.Connection do
   def start_link(connection_fields \\ %{}) do
     {:ok, pid} = Agent.start_link(fn -> %Connection{} end)
     update(pid, Map.merge(connection_fields, %{pid: pid}))
+
+    {:ok, pid}
   end
 
   def get(pid), do: Agent.get(pid, &(&1))
 
   def update(pid, fields) do
     Agent.update(pid, fn connection -> Map.merge(connection, fields) end)
-    get(pid)
   end
 
   def connection_for(source_pid, target_pid) do
-    connection = start_link
-    connection.pid |> update(%{source_pid: source_pid, target_pid: target_pid})
+    {:ok, pid} = start_link
+    pid |> update(%{source_pid: source_pid, target_pid: target_pid})
+
+    {:ok, pid}
   end
 end

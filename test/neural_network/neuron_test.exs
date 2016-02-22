@@ -4,7 +4,7 @@ defmodule NeuralNetwork.NeuronTest do
   doctest Neuron
 
   test "has default values as an agent" do
-    pid = Neuron.start_link
+    {:ok, pid} = Neuron.start_link
     neuron = Neuron.get(pid)
 
     assert neuron.input     == 0
@@ -16,7 +16,7 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test "has values passed in as an agent" do
-    pid = Neuron.start_link(%{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
+    {:ok, pid} = Neuron.start_link(%{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
     neuron = Neuron.get(pid)
     assert neuron.input     == 1
     assert neuron.output    == 2
@@ -31,7 +31,7 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test "update neuron values" do
-    pid = Neuron.start_link
+    {:ok, pid} = Neuron.start_link
     Neuron.update(pid, %{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
     neuron = Neuron.get(pid)
     assert neuron.input     == 1
@@ -43,7 +43,7 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test "bias neuron" do
-    pid = Neuron.start_link(%{bias?: true})
+    {:ok, pid} = Neuron.start_link(%{bias?: true})
     bias_neuron = Neuron.get(pid)
     assert bias_neuron.bias?
     assert bias_neuron.incoming == []
@@ -51,8 +51,8 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test ".connect" do
-    pidA = Neuron.start_link
-    pidB = Neuron.start_link
+    {:ok, pidA} = Neuron.start_link
+    {:ok, pidB} = Neuron.start_link
 
     Neuron.connect(pidA, pidB)
 
@@ -65,38 +65,38 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test ".activate with specified value" do
-    pid = Neuron.start_link
+    {:ok, pid} = Neuron.start_link
     pid |> Neuron.activate(1)
     assert Neuron.get(pid).output == 0.7310585786300049
   end
 
   test ".activate with no incoming connections" do
-    pid = Neuron.start_link
+    {:ok, pid} = Neuron.start_link
     pid |> Neuron.activate
     assert Neuron.get(pid).output == 0.5
   end
 
   test ".activate with incoming connections" do
-    pidX = Neuron.start_link(%{output: 2})
-    pidY = Neuron.start_link(%{output: 5})
+    {:ok, pidX} = Neuron.start_link(%{output: 2})
+    {:ok, pidY} = Neuron.start_link(%{output: 5})
 
-    connection_one = Connection.start_link(%{source_pid: pidX})
-    connection_two = Connection.start_link(%{source_pid: pidY})
+    {:ok, connection_one_pid} = Connection.start_link(%{source_pid: pidX})
+    {:ok, connection_two_pid} = Connection.start_link(%{source_pid: pidY})
 
-    pidA = Neuron.start_link(%{incoming: [connection_one, connection_two]})
+    {:ok, pidA} = Neuron.start_link(%{incoming: [connection_one_pid, connection_two_pid]})
     pidA |> Neuron.activate
     assert Neuron.get(pidA).output == 0.9426758241011313
   end
 
   test ".activate a bias neuron" do
-    pid = Neuron.start_link(%{bias?: true})
+    {:ok, pid} = Neuron.start_link(%{bias?: true})
     pid |> Neuron.activate
     assert Neuron.get(pid).output == 1
   end
 
   test "connect and activate two neurons" do
-    pidA = Neuron.start_link
-    pidB = Neuron.start_link
+    {:ok, pidA} = Neuron.start_link
+    {:ok, pidB} = Neuron.start_link
     Neuron.connect(pidA, pidB)
 
     pidA |> Neuron.activate(2)
@@ -112,8 +112,8 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test "train: delta should get smaller (learnin yo!)" do
-    pidA = Neuron.start_link
-    pidB = Neuron.start_link
+    {:ok, pidA} = Neuron.start_link
+    {:ok, pidB} = Neuron.start_link
     Neuron.connect(pidA, pidB)
 
     arbitrary_old_delta = 1000

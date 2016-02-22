@@ -13,7 +13,7 @@ defmodule NeuralNetwork.Network do
 
     pid |> update(layers)
     pid |> connect_layers
-    pid
+    {:ok, pid}
   end
 
   def get(pid), do: Agent.get(pid, &(&1))
@@ -25,19 +25,22 @@ defmodule NeuralNetwork.Network do
 
   defp input_neurons(layer_sizes) do
     size = layer_sizes |> List.first
-    Layer.start_link(%{neuron_size: size})
+    {:ok, pid} = Layer.start_link(%{neuron_size: size})
+    pid
   end
 
   defp output_neurons(layer_sizes) do
     size = layer_sizes |> List.last
-    Layer.start_link(%{neuron_size: size})
+    {:ok, pid} = Layer.start_link(%{neuron_size: size})
+    pid
   end
 
   defp hidden_neurons(layer_sizes) do
     layer_sizes
     |> hidden_layer_slice
     |> Enum.map(fn size ->
-         Layer.start_link(%{neuron_size: size})
+         {:ok, pid} = Layer.start_link(%{neuron_size: size})
+         pid
        end)
   end
 

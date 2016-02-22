@@ -12,7 +12,8 @@ defmodule NeuralNetwork.Neuron do
   def start_link(neuron_fields \\ %{}) do
     {:ok, pid} = Agent.start_link(fn -> %Neuron{} end)
     update(pid, Map.merge(neuron_fields, %{pid: pid}))
-    pid
+
+    {:ok, pid}
   end
 
   def update(pid, neuron_fields) do
@@ -22,9 +23,9 @@ defmodule NeuralNetwork.Neuron do
   def get(pid), do: Agent.get(pid, &(&1))
 
   def connect(source_neuron_pid, target_neuron_pid) do
-    connection = Connection.connection_for(source_neuron_pid, target_neuron_pid)
-    source_neuron_pid |> update(%{outgoing: get(source_neuron_pid).outgoing ++ [connection]})
-    target_neuron_pid |> update(%{incoming: get(target_neuron_pid).incoming ++ [connection]})
+    {:ok, connection_pid} = Connection.connection_for(source_neuron_pid, target_neuron_pid)
+    source_neuron_pid |> update(%{outgoing: get(source_neuron_pid).outgoing ++ [connection_pid]})
+    target_neuron_pid |> update(%{incoming: get(target_neuron_pid).incoming ++ [connection_pid]})
   end
 
   def activation_function(input) do
@@ -32,8 +33,9 @@ defmodule NeuralNetwork.Neuron do
   end
 
   defp sumf do
-    fn(connection, sum) ->
-      sum + get(connection.source_pid).output * Connection.get(connection.pid).weight
+    fn(connection_pid, sum) ->
+      connection = Connection.get(connection_pid)
+      sum + get(connection.source_pid).output * connection.weight
     end
   end
 
@@ -77,18 +79,20 @@ defmodule NeuralNetwork.Neuron do
   end
 
   defp calculate_outgoing_delta(neuron) do
-    delta = Enum.reduce(neuron.outgoing, 0, fn connection, sum ->
-      sum + Connection.get(connection.pid).weight * get(connection.target_pid).delta
+    delta = Enum.reduce(neuron.outgoing, 0, fn connection_pid, sum ->
+      connection = Connection.get(connection_pid)
+      sum + connection.weight * get(connection.target_pid).delta
     end)
 
     neuron.pid |> update(%{delta: delta})
   end
 
   defp update_outgoing_weights(neuron) do
-    for connection <- neuron.outgoing do
+    for connection_pid <- neuron.outgoing do
+      connection = Connection.get(connection_pid)
       gradient = neuron.output * get(connection.target_pid).delta
-      updated_weight = Connection.get(connection.pid).weight - gradient * learning_rate
-      Connection.update(connection.pid, %{weight: updated_weight})
+      updated_weight = connection.weight - gradient * learning_rate
+      Connection.update(connection_pid, %{weight: updated_weight})
     end
   end
 end
