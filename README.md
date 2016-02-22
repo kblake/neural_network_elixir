@@ -10,7 +10,7 @@ After cloning:
 
 Run the trainer and see the network learn using OR GATE data
 
-    $ mix learn
+    $ mix learn or
 
 You should see output like this:
     
@@ -27,9 +27,18 @@ You should see output like this:
     Epoch: 9999   Error: 0.0003270377487769315
     Epoch: 10000   Error: 0.0003269728572615501
 
+Valid options are: `or, and, xor, nand`
+
 Run tests
 
     $ mix test
+    
+###Huge Props and inspiration
+
+* Levi Thompson [https://github.com/levithomason](https://github.com/levithomason)
+..* Teaching the Dev Coop team about neural networks.
+* Dev Coop group for support [http://www.meetup.com/dev-coop/](http://www.meetup.com/dev-coop/)
+
 
 ## Installation
 
