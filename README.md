@@ -1,6 +1,6 @@
 # Neural Network
 
-A neural network made up of layers of neurons connected to each other to form a relationship allowing it to learn. This network is still a work in progress but is far enough along to get an idea of how it works.
+A neural network made up of layers of neurons connected to each other to form a relationship allowing it to learn. This network is still a work in progress but is far enough along to get an idea of how it works. This is a reimplementation of what was started here: [https://github.com/kblake/neural-net-elixir-v1](https://github.com/kblake/neural-net-elixir-v1).
 
 After cloning:
 
