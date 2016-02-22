@@ -27,7 +27,7 @@ You should see output like this:
     Epoch: 9999   Error: 0.0003270377487769315
     Epoch: 10000   Error: 0.0003269728572615501
 
-Valid options are: `or, and, xor, nand`
+Valid options are: `or`, `and`, `xor`, `nand`
 
 Run tests
 
@@ -36,7 +36,7 @@ Run tests
 ###Huge Props and inspiration
 
 * Levi Thompson [https://github.com/levithomason](https://github.com/levithomason)
-..* Teaching the Dev Coop team about neural networks.
+** Teaching the Dev Coop team about neural networks.
 * Dev Coop group for support [http://www.meetup.com/dev-coop/](http://www.meetup.com/dev-coop/)
 
 
