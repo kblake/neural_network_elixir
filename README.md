@@ -36,7 +36,6 @@ Run tests
 ###Huge Props and inspiration
 
 * Levi Thompson [https://github.com/levithomason](https://github.com/levithomason)
-** Teaching the Dev Coop team about neural networks.
 * Dev Coop group for support [http://www.meetup.com/dev-coop/](http://www.meetup.com/dev-coop/)
 
 
