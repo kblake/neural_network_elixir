@@ -110,7 +110,8 @@ defmodule NeuralNetwork.Network do
 
     network.hidden_layers
     |> Enum.reverse
-    |> Enum.each(fn layer -> layer |> Layer.train end)
+    |> Enum.each( &(Layer.train(&1)) )
+
 
     Layer.get(network.input_layer) |> Layer.train(target_outputs)
   end
