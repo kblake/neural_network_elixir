@@ -6,7 +6,7 @@ defmodule NeuralNetwork.Layer do
 
   alias NeuralNetwork.{Neuron, Layer}
 
-  defstruct pid: "", neurons: []
+  defstruct pid: nil, neurons: []
 
   def start_link(layer_fields \\ %{}) do
     {:ok, pid} = Agent.start_link(fn -> %Layer{} end)
