@@ -130,6 +130,9 @@ defmodule NeuralNetwork.Neuron do
     neuron.pid |> update(%{delta: delta})
   end
 
+  @doc """
+  https://en.m.wikipedia.org/wiki/Delta_rule
+  """
   defp update_outgoing_weights(neuron) do
     for connection_pid <- neuron.outgoing do
       connection = Connection.get(connection_pid)
