@@ -5,7 +5,7 @@ defmodule NeuralNetwork.Network do
 
   alias NeuralNetwork.{Neuron, Layer, Network}
 
-  defstruct pid: nil, input_layer: %{}, output_layer: %{}, hidden_layers: [], error: 0
+  defstruct pid: nil, input_layer: nil, output_layer: nil, hidden_layers: [], error: 0
 
   @doc """
   Pass in layer sizes which will generate the layers for the network.
