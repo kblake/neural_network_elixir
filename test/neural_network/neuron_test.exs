@@ -116,19 +116,23 @@ defmodule NeuralNetwork.NeuronTest do
     {:ok, pidB} = Neuron.start_link
     Neuron.connect(pidA, pidB)
 
-    arbitrary_old_delta = 1000
-
-    for n <- 1..100 do
+    deltas = Enum.map 1..100, fn _ ->
       pidA |> Neuron.activate(2)
       pidB |> Neuron.activate
 
       pidB |> Neuron.train(1)
       pidA |> Neuron.train
 
-      # neuronB delta should be smaller than the previous one
-      assert Neuron.get(pidB).delta < arbitrary_old_delta
-
-      arbitrary_old_delta = Neuron.get(pidB).delta
+      Neuron.get(pidB).delta
     end
+
+    deltas
+    |> Stream.with_index
+    |> Enum.each(fn tuple ->
+         {delta, index} = tuple
+         if Enum.at(deltas, index + 1) do
+           assert delta < Enum.at(deltas, index + 1)
+         end
+       end)
   end
 end
