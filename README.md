@@ -66,7 +66,7 @@ Run tests
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+[Available in Hex](https://hex.pm/packages/neural_network), the package can be installed as:
 
   1. Add neural_network to your list of dependencies in `mix.exs`:
 
