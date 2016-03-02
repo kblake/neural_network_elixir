@@ -22,6 +22,7 @@ defmodule NeuralNetwork.Connection do
 
   def update(pid, fields) do
     Agent.update(pid, fn connection -> Map.merge(connection, fields) end)
+    Agent.update(pid, &(Map.merge(&1, fields)))
   end
 
   @doc """

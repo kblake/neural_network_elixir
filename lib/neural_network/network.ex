@@ -37,7 +37,7 @@ defmodule NeuralNetwork.Network do
   """
   def update(pid, fields) do
     fields = Map.merge(fields, %{pid: pid}) # preserve the pid!!
-    Agent.update(pid, fn network -> Map.merge(network, fields) end)
+    Agent.update(pid,  &(Map.merge(&1, fields)))
   end
 
   defp input_neurons(layer_sizes) do

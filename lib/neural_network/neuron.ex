@@ -36,7 +36,7 @@ defmodule NeuralNetwork.Neuron do
       2
   """
   def update(pid, neuron_fields) do
-    Agent.update(pid, fn neuron -> Map.merge(neuron, neuron_fields) end)
+    Agent.update(pid, &(Map.merge(&1, neuron_fields)))
   end
 
   @doc """

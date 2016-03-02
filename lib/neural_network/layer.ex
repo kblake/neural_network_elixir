@@ -25,7 +25,7 @@ defmodule NeuralNetwork.Layer do
   Update a layer by passing in a pid and a map of fields to update.
   """
   def update(pid, fields) do
-    Agent.update(pid, fn layer -> Map.merge(layer, fields) end)
+    Agent.update(pid, &(Map.merge(&1, fields)))
   end
 
   defp create_neurons(nil), do: []
@@ -86,7 +86,7 @@ defmodule NeuralNetwork.Layer do
   end
 
   defp contains_bias?(layer) do
-    Enum.any? layer.neurons, fn(neuron) -> Neuron.get(neuron).bias? end
+    Enum.any? layer.neurons, &(Neuron.get(&1).bias?)
   end
 
   @doc """
