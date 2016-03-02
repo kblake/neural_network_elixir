@@ -3,32 +3,38 @@ defmodule NeuralNetwork.Mixfile do
 
   def project do
     [app: :neural_network,
-     version: "0.0.1",
+     version: "0.1.0",
      elixir: "~> 1.2",
      name: "Neural Network",
+     description: description,
+     package: package,
      source_url: "https://github.com/kblake/neural-net-elixir",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
   end
 
-  # Configuration for the OTP application
-  #
-  # Type "mix help compile.app" for more information
   def application do
     [applications: [:logger],
      mod: {NeuralNetwork, []}]
   end
 
-  # Dependencies can be Hex packages:
-  #
-  #   {:mydep, "~> 0.3.0"}
-  #
-  # Or git/path repositories:
-  #
-  #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
-  #
-  # Type "mix help deps" for more examples and options
+  defp description do
+    """
+    A neural network made up of layers of neurons connected to each other to form a relationship allowing it to learn.
+    """
+  end
+
+  defp package do
+    [
+      maintainers: ["Karmen Blake"],
+      licenses: ["MIT"],
+      links: %{
+        "Github" => "https://github.com/kblake/neural-net-elixir"
+      }
+    ]
+  end
+
   defp deps do
     [
       {:earmark, "~> 0.1", only: :dev},
