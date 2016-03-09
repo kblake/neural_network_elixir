@@ -28,10 +28,8 @@ defmodule NeuralNetwork.Neuron do
   @doc """
   ## Pass in the pid, and a map to update values of a neuron
       iex> {:ok, pid} = NeuralNetwork.Neuron.start_link
-      ...> NeuralNetwork.Neuron.update(pid, %{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
+      ...> NeuralNetwork.Neuron.update(pid, %{input: 3, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
       ...> neuron = NeuralNetwork.Neuron.get(pid)
-      ...> neuron.input
-      1
       ...> neuron.output
       2
   """
@@ -130,9 +128,7 @@ defmodule NeuralNetwork.Neuron do
     neuron.pid |> update(%{delta: delta})
   end
 
-  @doc """
-  https://en.m.wikipedia.org/wiki/Delta_rule
-  """
+  # https://en.m.wikipedia.org/wiki/Delta_rule
   defp update_outgoing_weights(neuron) do
     for connection_pid <- neuron.outgoing do
       connection = Connection.get(connection_pid)
