@@ -108,7 +108,7 @@ defmodule NeuralNetwork.Neuron do
       end
     end
 
-    get(neuron.pid) |> update_outgoing_weights
+    neuron.pid |> get |> update_outgoing_weights
   end
 
   defp output_neuron?(neuron) do

@@ -12,8 +12,8 @@ defmodule NeuralNetwork.Trainer do
 
     for epoch <- 0..epochs do
       average_error = Enum.reduce(data, 0, fn sample, sum ->
-        Network.get(network_pid) |> Network.activate(sample.input)
-        Network.get(network_pid) |> Network.train(sample.output)
+        network_pid |> Network.get |> Network.activate(sample.input)
+        network_pid |> Network.get |> Network.train(sample.output)
 
         sum + Network.get(network_pid).error/data_length
       end)

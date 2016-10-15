@@ -67,7 +67,7 @@ defmodule NeuralNetwork.Network do
   end
 
   defp connect_layers(pid) do
-    layers = Network.get(pid) |> flatten_layers
+    layers = pid |> Network.get |> flatten_layers
 
     layers
     |> Stream.with_index
@@ -105,15 +105,15 @@ defmodule NeuralNetwork.Network do
   The input layer is skipped (no use for deltas).
   """
   def train(network, target_outputs) do
-    Layer.get(network.output_layer) |> Layer.train(target_outputs)
+    network.output_layer |> Layer.get |> Layer.train(target_outputs)
     network.pid |> update(%{error: error_function(network, target_outputs)})
 
     network.hidden_layers
     |> Enum.reverse
-    |> Enum.each( &(Layer.train(&1)) )
+    |> Enum.each(&(Layer.train(&1)))
 
 
-    Layer.get(network.input_layer) |> Layer.train(target_outputs)
+    network.input_layer |> Layer.get |> Layer.train(target_outputs)
   end
 
   defp error_function(network, target_outputs) do
