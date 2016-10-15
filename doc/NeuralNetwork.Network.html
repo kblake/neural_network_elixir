@@ -4,21 +4,20 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.11.4">
+    <meta name="generator" content="ExDoc v0.14.3">
     <title>NeuralNetwork.Network – Neural Network v0.1.0</title>
-    <link rel="stylesheet" href="dist/app-1e374caa3d.css" />
+    <link rel="stylesheet" href="dist/app-091c05798a.css" />
+    
     <script src="dist/sidebar_items.js"></script>
   </head>
   <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
 
     <div class="main">
 <button class="sidebar-toggle">
   <i class="icon-menu"></i>
 </button>
 <section class="sidebar">
-  <button class="sidebar-toggle">
-    <i class="icon-menu"></i>
-  </button>
 
   
   <a href="api-reference.html" class="sidebar-projectLink">
@@ -49,13 +48,13 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
-  <div id="content" class="content-inner">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
 
 
       <h1>
@@ -70,7 +69,7 @@
       </h1>
 
       
-        <section id="moduledoc" class="docstring">
+        <section id="moduledoc">
           <p>Contains layers which makes up a matrix of neurons.</p>
 
         </section>
@@ -162,54 +161,62 @@ backward through the network</p>
             Functions
           </h1>
           <div class="detail" id="activate/2">
+  
   <div class="detail-header">
     <a href="#activate/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">activate(network, input_values)</span>
-      
+    
       <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L91" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Activate the network given list of input values.</p>
 
   </section>
 </div>
 <div class="detail" id="get/1">
+  
   <div class="detail-header">
     <a href="#get/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">get(pid)</span>
-      
+    
       <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L33" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Return the network by pid.</p>
 
   </section>
 </div>
 <div class="detail" id="start_link/1">
+  
+    <span id="start_link/0" />
+  
   <div class="detail-header">
     <a href="#start_link/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">start_link(layer_sizes \\ [])</span>
-      
+    
       <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L16" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Pass in layer sizes which will generate the layers for the network.
 The first number represents the number of neurons in the input layer.
@@ -219,18 +226,20 @@ The last number represents the number of neurons in the output layer.
   </section>
 </div>
 <div class="detail" id="train/2">
+  
   <div class="detail-header">
     <a href="#train/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">train(network, target_outputs)</span>
-      
+    
       <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L107" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Set the network error and output layer’s deltas propagate them
 backward through the network.</p>
@@ -239,18 +248,20 @@ backward through the network.</p>
   </section>
 </div>
 <div class="detail" id="update/2">
+  
   <div class="detail-header">
     <a href="#update/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">update(pid, fields)</span>
-      
+    
       <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/network.ex#L38" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Update the network layers.</p>
 
@@ -263,23 +274,24 @@ backward through the network.</p>
       
 
       
-        <footer class="footer">
-      <p>
-        <span class="line">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
-        </span>
-        <span class="line">
-          designed by
-          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
           </span>
-      </p>
-      <button class="night-mode-toggle" />
-    </footer>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
   </div>
 </section>
 </div>
-  <script src="dist/app-6d2e071366.js"></script>
+  <script src="dist/app-574613960f.js"></script>
   </body>
 </html>
 

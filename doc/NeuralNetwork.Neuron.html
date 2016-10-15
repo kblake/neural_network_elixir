@@ -4,21 +4,20 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.11.4">
+    <meta name="generator" content="ExDoc v0.14.3">
     <title>NeuralNetwork.Neuron – Neural Network v0.1.0</title>
-    <link rel="stylesheet" href="dist/app-1e374caa3d.css" />
+    <link rel="stylesheet" href="dist/app-091c05798a.css" />
+    
     <script src="dist/sidebar_items.js"></script>
   </head>
   <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
 
     <div class="main">
 <button class="sidebar-toggle">
   <i class="icon-menu"></i>
 </button>
 <section class="sidebar">
-  <button class="sidebar-toggle">
-    <i class="icon-menu"></i>
-  </button>
 
   
   <a href="api-reference.html" class="sidebar-projectLink">
@@ -49,13 +48,13 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
-  <div id="content" class="content-inner">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
 
 
       <h1>
@@ -70,7 +69,7 @@
       </h1>
 
       
-        <section id="moduledoc" class="docstring">
+        <section id="moduledoc">
           <p>A neuron makes up a network. It’s purpose is to sum its inputs
 and compute an output. During training the neurons adjust weights
 of its outgoing connections to other neurons.</p>
@@ -110,7 +109,7 @@ Other neurons: will squash their input value to compute output</p>
     <a href="#activation_function/1">activation_function(input)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Sigmoid function. See more at: <a href="https://en.wikipedia.org/wiki/Sigmoid_function">https://en.wikipedia.org/wiki/Sigmoid_function</a></p>
+    <div class="summary-synopsis"><p>Sigmoid function. See more at: https://en.wikipedia.org/wiki/Sigmoid_function</p>
 </div>
   
 </div>
@@ -164,10 +163,8 @@ Set the neuron’s delta value</p>
   
     <div class="summary-synopsis"><h2>Pass in the pid, and a map to update values of a neuron</h2>
 <pre><code class="iex elixir">iex&gt; {:ok, pid} = NeuralNetwork.Neuron.start_link
-...&gt; NeuralNetwork.Neuron.update(pid, %{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
+...&gt; NeuralNetwork.Neuron.update(pid, %{input: 3, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
 ...&gt; neuron = NeuralNetwork.Neuron.get(pid)
-...&gt; neuron.input
-1
 ...&gt; neuron.output
 2</code></pre>
 </div>
@@ -195,18 +192,22 @@ Set the neuron’s delta value</p>
             Functions
           </h1>
           <div class="detail" id="activate/2">
+  
+    <span id="activate/1" />
+  
   <div class="detail-header">
     <a href="#activate/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">activate(neuron_pid, value \\ nil)</span>
-      
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L81" class="view-source" rel="help" title="View Source">
+    
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L79" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Activate a neuron. Set the input value and compute the output
 Input neuron: output will always equal their input value
@@ -216,110 +217,130 @@ Other neurons: will squash their input value to compute output</p>
   </section>
 </div>
 <div class="detail" id="activation_function/1">
+  
   <div class="detail-header">
     <a href="#activation_function/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">activation_function(input)</span>
-      
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L64" class="view-source" rel="help" title="View Source">
+    
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L62" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
-    <p>Sigmoid function. See more at: <a href="https://en.wikipedia.org/wiki/Sigmoid_function">https://en.wikipedia.org/wiki/Sigmoid_function</a></p>
-<h2>Example</h2>
+    <p>Sigmoid function. See more at: https://en.wikipedia.org/wiki/Sigmoid_function</p>
+<h2 id="activation_function/1-example" class="section-heading">
+  <a href="#activation_function/1-example" class="hover-link"><i class="icon-link"></i></a>
+  Example
+</h2>
+
 <pre><code class="iex elixir">iex&gt; NeuralNetwork.Neuron.activation_function(1)
 0.7310585786300049</code></pre>
 
   </section>
 </div>
 <div class="detail" id="connect/2">
+  
   <div class="detail-header">
     <a href="#connect/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">connect(source_neuron_pid, target_neuron_pid)</span>
-      
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L50" class="view-source" rel="help" title="View Source">
+    
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L48" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Connect two neurons</p>
 
   </section>
 </div>
 <div class="detail" id="get/1">
+  
   <div class="detail-header">
     <a href="#get/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">get(pid)</span>
-      
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L45" class="view-source" rel="help" title="View Source">
+    
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L43" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Lookup and return a neuron</p>
 
   </section>
 </div>
 <div class="detail" id="learning_rate/0">
+  
   <div class="detail-header">
     <a href="#learning_rate/0" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">learning_rate()</span>
-      
+    
       <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L14" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     
   </section>
 </div>
 <div class="detail" id="start_link/1">
+  
+    <span id="start_link/0" />
+  
   <div class="detail-header">
     <a href="#start_link/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">start_link(neuron_fields \\ %{})</span>
-      
+    
       <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L21" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Create a neuron agent</p>
 
   </section>
 </div>
 <div class="detail" id="train/2">
+  
+    <span id="train/1" />
+  
   <div class="detail-header">
     <a href="#train/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">train(neuron_pid, target_output \\ nil)</span>
-      
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L98" class="view-source" rel="help" title="View Source">
+    
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L96" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Backprop using the delta.
 Set the neuron’s delta value.</p>
@@ -327,25 +348,29 @@ Set the neuron’s delta value.</p>
   </section>
 </div>
 <div class="detail" id="update/2">
+  
   <div class="detail-header">
     <a href="#update/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">update(pid, neuron_fields)</span>
-      
-      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L38" class="view-source" rel="help" title="View Source">
+    
+      <a href="https://github.com/kblake/neural-net-elixir/blob/master/lib/neural_network/neuron.ex#L36" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
-    <h2>Pass in the pid, and a map to update values of a neuron</h2>
+    <h2 id="update/2-pass-in-the-pid-and-a-map-to-update-values-of-a-neuron" class="section-heading">
+  <a href="#update/2-pass-in-the-pid-and-a-map-to-update-values-of-a-neuron" class="hover-link"><i class="icon-link"></i></a>
+  Pass in the pid, and a map to update values of a neuron
+</h2>
+
 <pre><code class="iex elixir">iex&gt; {:ok, pid} = NeuralNetwork.Neuron.start_link
-...&gt; NeuralNetwork.Neuron.update(pid, %{input: 1, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
+...&gt; NeuralNetwork.Neuron.update(pid, %{input: 3, output: 2, incoming: [1], outgoing: [2], bias?: true, delta: 1})
 ...&gt; neuron = NeuralNetwork.Neuron.get(pid)
-...&gt; neuron.input
-1
 ...&gt; neuron.output
 2</code></pre>
 
@@ -358,23 +383,24 @@ Set the neuron’s delta value.</p>
       
 
       
-        <footer class="footer">
-      <p>
-        <span class="line">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
-        </span>
-        <span class="line">
-          designed by
-          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
           </span>
-      </p>
-      <button class="night-mode-toggle" />
-    </footer>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
   </div>
 </section>
 </div>
-  <script src="dist/app-6d2e071366.js"></script>
+  <script src="dist/app-574613960f.js"></script>
   </body>
 </html>
 

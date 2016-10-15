@@ -37,8 +37,8 @@ defmodule NeuralNetwork.Mixfile do
 
   defp deps do
     [
-      {:earmark, "~> 0.1", only: :dev},
-      {:ex_doc, "~> 0.10", only: :dev},
+      {:earmark, "~> 1.0.2", only: :dev},
+      {:ex_doc, "~> 0.14.3", only: :dev},
       {:mix_test_watch, "~> 0.2", only: :dev}
     ]
   end
