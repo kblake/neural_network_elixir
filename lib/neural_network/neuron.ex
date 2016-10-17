@@ -47,8 +47,12 @@ defmodule NeuralNetwork.Neuron do
   """
   def connect(source_neuron_pid, target_neuron_pid) do
     {:ok, connection_pid} = Connection.connection_for(source_neuron_pid, target_neuron_pid)
-    source_neuron_pid |> update(%{outgoing: get(source_neuron_pid).outgoing ++ [connection_pid]})
-    target_neuron_pid |> update(%{incoming: get(target_neuron_pid).incoming ++ [connection_pid]})
+
+    source_neuron_pid
+    |> update(%{outgoing: get(source_neuron_pid).outgoing ++ [connection_pid]})
+
+    target_neuron_pid
+    |> update(%{incoming: get(target_neuron_pid).incoming ++ [connection_pid]})
   end
 
   @doc """

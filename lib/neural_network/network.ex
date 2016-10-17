@@ -120,8 +120,13 @@ defmodule NeuralNetwork.Network do
     (Layer.get(network.output_layer).neurons
     |> Stream.with_index
     |> Enum.reduce(0, fn({neuron, index}, sum) ->
-         sum + 0.5 * :math.pow(Enum.at(target_outputs, index) - Neuron.get(neuron).output, 2)
+         math_power_of_output_difference(target_outputs, index, neuron)
        end)) / length(Layer.get(network.output_layer).neurons)
+  end
+
+  # TODO: Look into what the correct name should be
+  defp math_power_of_output_difference(target_outputs, index, neuron) do
+    :math.pow(Enum.at(target_outputs, index) - Neuron.get(neuron).output, 2)
   end
 
   defp map_layers(input_layer, hidden_layers, output_layer) do
