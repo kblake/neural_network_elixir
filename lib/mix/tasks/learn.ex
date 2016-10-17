@@ -1,4 +1,8 @@
 defmodule Mix.Tasks.Learn do
+  @moduledoc """
+  Mix task to run the neural network using various data sets.
+  """
+
   use Mix.Task
 
   alias NeuralNetwork.{DataFactory, Network, Trainer}

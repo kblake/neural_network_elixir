@@ -1,4 +1,8 @@
 defmodule NeuralNetwork do
+  @moduledoc """
+  Setup workers and start the app.
+  """
+
   use Application
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
