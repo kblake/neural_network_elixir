@@ -116,17 +116,19 @@ defmodule NeuralNetwork.Network do
     network.input_layer |> Layer.get |> Layer.train(target_outputs)
   end
 
+  # https://en.wikipedia.org/wiki/Backpropagation#Derivation
   defp error_function(network, target_outputs) do
     (Layer.get(network.output_layer).neurons
     |> Stream.with_index
     |> Enum.reduce(0, fn({neuron, index}, sum) ->
-         math_power_of_output_difference(target_outputs, index, neuron)
+        target_output = Enum.at(target_outputs, index)
+        actual_output = Neuron.get(neuron).output
+        squared_error(sum, index, target_output, actual_output)
        end)) / length(Layer.get(network.output_layer).neurons)
   end
 
-  # TODO: Look into what the correct name should be
-  defp math_power_of_output_difference(target_outputs, index, neuron) do
-    :math.pow(Enum.at(target_outputs, index) - Neuron.get(neuron).output, 2)
+  defp squared_error(sum, index, target_output, actual_output) do
+    sum + 0.5 * :math.pow(target_output - actual_output, 2)
   end
 
   defp map_layers(input_layer, hidden_layers, output_layer) do
