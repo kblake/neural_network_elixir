@@ -132,6 +132,7 @@ defmodule NeuralNetwork.Neuron do
     neuron.pid |> update(%{delta: delta})
   end
 
+  # Gradient descent: updating weights of inputs of neuron during backprop
   # https://en.m.wikipedia.org/wiki/Delta_rule
   defp update_outgoing_weights(neuron) do
     for connection_pid <- neuron.outgoing do

@@ -5,7 +5,7 @@ defmodule NeuralNetwork.Network do
 
   alias NeuralNetwork.{Neuron, Layer, Network}
 
-  defstruct pid: nil, input_layer: nil, output_layer: nil, hidden_layers: [], error: 0
+  defstruct pid: nil, input_layer: nil, hidden_layers: [], output_layer: nil, error: 0
 
   @doc """
   Pass in layer sizes which will generate the layers for the network.
@@ -46,19 +46,19 @@ defmodule NeuralNetwork.Network do
     pid
   end
 
-  defp output_neurons(layer_sizes) do
-    size = layer_sizes |> List.last
-    {:ok, pid} = Layer.start_link(%{neuron_size: size})
-    pid
-  end
-
   defp hidden_neurons(layer_sizes) do
     layer_sizes
     |> hidden_layer_slice
     |> Enum.map(fn size ->
-         {:ok, pid} = Layer.start_link(%{neuron_size: size})
-         pid
-       end)
+      {:ok, pid} = Layer.start_link(%{neuron_size: size})
+      pid
+    end)
+  end
+
+  defp output_neurons(layer_sizes) do
+    size = layer_sizes |> List.last
+    {:ok, pid} = Layer.start_link(%{neuron_size: size})
+    pid
   end
 
   defp hidden_layer_slice(layer_sizes) do
@@ -110,8 +110,9 @@ defmodule NeuralNetwork.Network do
 
     network.hidden_layers
     |> Enum.reverse
-    |> Enum.each(&(Layer.train(&1)))
-
+    |> Enum.each(fn layer_pid ->
+      Layer.get(layer_pid) |> Layer.train(target_outputs)
+    end)
 
     network.input_layer |> Layer.get |> Layer.train(target_outputs)
   end
