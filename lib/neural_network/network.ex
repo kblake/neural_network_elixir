@@ -100,7 +100,7 @@ defmodule NeuralNetwork.Network do
 
   @doc """
   Set the network error and output layer's deltas propagate them
-  backward through the network.
+  backward through the network. (Back Propogation!)
 
   The input layer is skipped (no use for deltas).
   """

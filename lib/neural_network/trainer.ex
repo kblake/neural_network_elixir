@@ -12,7 +12,11 @@ defmodule NeuralNetwork.Trainer do
 
     for epoch <- 0..epochs do
       average_error = Enum.reduce(data, 0, fn sample, sum ->
+        # sum weighted inputs to produce output value of network
+        # that output will be compared with target output to find the delta
         network_pid |> Network.get |> Network.activate(sample.input)
+
+        # Backpropagation
         network_pid |> Network.get |> Network.train(sample.output)
 
         sum + Network.get(network_pid).error/data_length
