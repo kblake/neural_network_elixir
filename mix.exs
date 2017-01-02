@@ -3,12 +3,12 @@ defmodule NeuralNetwork.Mixfile do
 
   def project do
     [app: :neural_network,
-     version: "0.1.1",
+     version: "0.1.3",
      elixir: "~> 1.2",
      name: "Neural Network",
      description: description,
      package: package,
-     source_url: "https://github.com/kblake/neural-net-elixir",
+     source_url: "https://github.com/kblake/neural_network_elixir",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
@@ -30,7 +30,7 @@ defmodule NeuralNetwork.Mixfile do
       maintainers: ["Karmen Blake"],
       licenses: ["MIT"],
       links: %{
-        "Github" => "https://github.com/kblake/neural-net-elixir"
+        "Github" => "https://github.com/kblake/neural_network_elixir"
       }
     ]
   end
