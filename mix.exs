@@ -6,12 +6,12 @@ defmodule NeuralNetwork.Mixfile do
      version: "0.1.3",
      elixir: "~> 1.2",
      name: "Neural Network",
-     description: description,
-     package: package,
+     description: description(),
+     package: package(),
      source_url: "https://github.com/kblake/neural_network_elixir",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps]
+     deps: deps()]
   end
 
   def application do

@@ -86,7 +86,7 @@ defmodule NeuralNetwork.Neuron do
     fields = if neuron.bias? do
       %{output: 1}
     else
-      input = value || Enum.reduce(neuron.incoming, 0, sumf)
+      input = value || Enum.reduce(neuron.incoming, 0, sumf())
       %{input: input, output: activation_function(input)}
     end
 
@@ -138,7 +138,7 @@ defmodule NeuralNetwork.Neuron do
     for connection_pid <- neuron.outgoing do
       connection = Connection.get(connection_pid)
       gradient = neuron.output * get(connection.target_pid).delta
-      updated_weight = connection.weight - gradient * learning_rate
+      updated_weight = connection.weight - gradient * learning_rate()
       Connection.update(connection_pid, %{weight: updated_weight})
     end
   end

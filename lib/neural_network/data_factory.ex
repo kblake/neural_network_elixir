@@ -5,26 +5,26 @@ defmodule NeuralNetwork.DataFactory do
   """
 
   def gate_for(name) do
-    {:ok, data} = Map.fetch(gates, String.to_atom(name))
+    {:ok, data} = Map.fetch(gates(), String.to_atom(name))
     data
   end
 
   def gates do
     %{
-      or:          or_gate,
-      and:         and_gate,
-      xor:         xor_gate,
-      nand:        nand_gate,
-      iris_flower: iris_flower_gate
+      or:          or_gate(),
+      and:         and_gate(),
+      xor:         xor_gate(),
+      nand:        nand_gate(),
+      iris_flower: iris_flower_gate()
     }
   end
 
   def gate_names do
-    gates |> Map.keys |> Enum.join(", ")
+    gates() |> Map.keys |> Enum.join(", ")
   end
 
   def gate_exists?(name) do
-    Map.has_key? gates, String.to_atom(name)
+    Map.has_key? gates(), String.to_atom(name)
   end
 
   @or_gate [

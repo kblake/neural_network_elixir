@@ -30,7 +30,7 @@ defmodule NeuralNetwork.Connection do
   and then returns connection pid.
   """
   def connection_for(source_pid, target_pid) do
-    {:ok, pid} = start_link
+    {:ok, pid} = start_link()
     pid |> update(%{source_pid: source_pid, target_pid: target_pid})
 
     {:ok, pid}

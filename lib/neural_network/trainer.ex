@@ -29,6 +29,8 @@ defmodule NeuralNetwork.Trainer do
   end
 
   defp unexponential(average_error) do
-    Float.to_string average_error, [decimals: 19, compact: true]
+    # Float.to_string average_error, [decimals: 19, compact: true]
+    :erlang.float_to_binary(average_error, [{:decimals, 19}, :compact])
+    # :erlang.float_to_binary(7.12, [{:decimals, 4}, :compact])
   end
 end
