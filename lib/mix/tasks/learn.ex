@@ -10,14 +10,16 @@ defmodule Mix.Tasks.Learn do
   @shortdoc "Run the neural network app"
 
   def run(args) do
-    gate_name = args |> List.first
+    destructure [gate_name, epoch_count], args
+    epoch_count = (epoch_count && :erlang.binary_to_integer(epoch_count)) || 10_000
+
     IO.puts ""
 
     if DataFactory.gate_exists?(gate_name) do
       {:ok, network_pid} = Network.start_link([1,1])
       data = DataFactory.gate_for(gate_name)
       IO.puts "#{String.upcase(gate_name)} gate learning *********************************************"
-      Trainer.train(network_pid, data, %{epochs: 10_000, log_freqs: 1000})
+      Trainer.train(network_pid, data, %{epochs: epoch_count, log_freqs: 1000})
       IO.puts "**************************************************************"
     else
       IO.puts "Cannot learn: '#{gate_name}'. Try one of these instead: #{DataFactory.gate_names}"
