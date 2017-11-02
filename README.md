@@ -71,7 +71,7 @@ Run tests
   1. Add neural_network to your list of dependencies in `mix.exs`:
 
         def deps do
-          [{:neural_network, "~> 0.1.3"}]
+          [{:neural_network, "~> 0.1.4"}]
         end
 
   2. Ensure neural_network is started before your application:

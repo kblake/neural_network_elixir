@@ -3,7 +3,7 @@ defmodule NeuralNetwork.Mixfile do
 
   def project do
     [app: :neural_network,
-     version: "0.1.3",
+     version: "0.1.4",
      elixir: "~> 1.2",
      name: "Neural Network",
      description: description(),
