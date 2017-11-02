@@ -40,7 +40,7 @@ defmodule NeuralNetwork.Mixfile do
       {:earmark, "~> 1.0.2", only: :dev},
       {:ex_doc, "~> 0.14.3", only: :dev},
       {:mix_test_watch, "~> 0.2", only: :dev},
-      {:credo, "~> 0.4", only: [:dev, :test]}
+      {:credo, "~> 0.8", only: [:dev, :test], runtime: false}
     ]
   end
 end
