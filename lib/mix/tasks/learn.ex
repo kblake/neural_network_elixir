@@ -16,7 +16,7 @@ defmodule Mix.Tasks.Learn do
     IO.puts ""
 
     if DataFactory.gate_exists?(gate_name) do
-      {:ok, network_pid} = Network.start_link([1,1])
+      {:ok, network_pid} = Network.start_link([2,1])
       data = DataFactory.gate_for(gate_name)
       IO.puts "#{String.upcase(gate_name)} gate learning *********************************************"
       Trainer.train(network_pid, data, %{epochs: epoch_count, log_freqs: 1000})

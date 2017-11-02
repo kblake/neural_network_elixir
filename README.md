@@ -13,7 +13,7 @@ Run the trainer and see the network learn using OR GATE data
     $ mix learn or
 
 You should see output like this:
-    
+
     OR gate learning *********************************************
     Epoch: 0   Error: 0.0978034950879825143
     Epoch: 1000   Error: 0.0177645755625382047
@@ -57,8 +57,8 @@ Valid options are: `or`, `and`, `xor`, `nand`, `iris_flower`
 Run tests
 
     $ mix test
-    
-###Huge props
+
+### Huge props
 
 * Levi Thompson [https://github.com/levithomason](https://github.com/levithomason)
 * Dev Coop group for support [http://www.meetup.com/dev-coop/](http://www.meetup.com/dev-coop/)
