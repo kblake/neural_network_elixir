@@ -13,18 +13,24 @@ defmodule Mix.Tasks.Learn do
     destructure [gate_name, epoch_count], args
     epoch_count = (epoch_count && :erlang.binary_to_integer(epoch_count)) || 10_000
 
-    IO.puts ""
+    IO.puts("")
 
     if DataFactory.gate_exists?(gate_name) do
-      {:ok, network_pid} = Network.start_link([2,1])
+      {:ok, network_pid} = Network.start_link([2, 1])
       data = DataFactory.gate_for(gate_name)
-      IO.puts "#{String.upcase(gate_name)} gate learning *********************************************"
+
+      IO.puts(
+        "#{String.upcase(gate_name)} gate learning *********************************************"
+      )
+
       Trainer.train(network_pid, data, %{epochs: epoch_count, log_freqs: 1000})
-      IO.puts "**************************************************************"
+      IO.puts("**************************************************************")
     else
-      IO.puts "Cannot learn: '#{gate_name}'. Try one of these instead: #{DataFactory.gate_names}"
+      IO.puts(
+        "Cannot learn: '#{gate_name}'. Try one of these instead: #{DataFactory.gate_names()}"
+      )
     end
 
-    IO.puts ""
+    IO.puts("")
   end
 end

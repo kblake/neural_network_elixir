@@ -19,19 +19,23 @@ defmodule NeuralNetwork.Layer do
   @doc """
   Return a layer by pid.
   """
-  def get(pid), do: Agent.get(pid, &(&1))
+  def get(pid), do: Agent.get(pid, & &1)
 
   @doc """
   Update a layer by passing in a pid and a map of fields to update.
   """
   def update(pid, fields) do
-    Agent.update(pid, &(Map.merge(&1, fields)))
+    Agent.update(pid, &Map.merge(&1, fields))
   end
 
   defp create_neurons(nil), do: []
   defp create_neurons(size) when size < 1, do: []
+
   defp create_neurons(size) when size > 0 do
-    Enum.into 1..size, [], fn _ -> {:ok, pid} = Neuron.start_link; pid end
+    Enum.into(1..size, [], fn _ ->
+      {:ok, pid} = Neuron.start_link()
+      pid
+    end)
   end
 
   @doc """
@@ -62,8 +66,8 @@ defmodule NeuralNetwork.Layer do
   """
   def train(layer, target_outputs \\ []) do
     layer.neurons
-    |> Stream.with_index
-    |> Enum.each(fn(tuple) ->
+    |> Stream.with_index()
+    |> Enum.each(fn tuple ->
       {neuron, index} = tuple
       neuron |> Neuron.train(Enum.at(target_outputs, index))
     end)
@@ -73,34 +77,36 @@ defmodule NeuralNetwork.Layer do
   Connect every neuron in the input layer to every neuron in the target layer.
   """
   def connect(input_layer_pid, output_layer_pid) do
-    input_layer  = get(input_layer_pid)
+    input_layer = get(input_layer_pid)
 
     unless contains_bias?(input_layer) do
       {:ok, pid} = Neuron.start_link(%{bias?: true})
       input_layer_pid |> add_neurons([pid])
     end
 
-    for source_neuron <- get(input_layer_pid).neurons, target_neuron <- get(output_layer_pid).neurons do
+    for source_neuron <- get(input_layer_pid).neurons,
+        target_neuron <- get(output_layer_pid).neurons do
       Neuron.connect(source_neuron, target_neuron)
     end
   end
 
   defp contains_bias?(layer) do
-    Enum.any? layer.neurons, &(Neuron.get(&1).bias?)
+    Enum.any?(layer.neurons, &Neuron.get(&1).bias?)
   end
 
   @doc """
   Activate all neurons in the layer with a list of values.
   """
   def activate(layer_pid, values \\ nil) do
-    layer  = get(layer_pid)
-    values = List.wrap(values) # coerce to [] if nil
+    layer = get(layer_pid)
+    # coerce to [] if nil
+    values = List.wrap(values)
 
     layer.neurons
-    |> Stream.with_index
-    |> Enum.each(fn(tuple) ->
-         {neuron, index} = tuple
-         neuron |> Neuron.activate(Enum.at(values, index))
-       end)
+    |> Stream.with_index()
+    |> Enum.each(fn tuple ->
+      {neuron, index} = tuple
+      neuron |> Neuron.activate(Enum.at(values, index))
+    end)
   end
 end
