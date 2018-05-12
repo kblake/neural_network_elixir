@@ -2,21 +2,22 @@ defmodule NeuralNetwork.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :neural_network,
-     version: "0.1.4",
-     elixir: "~> 1.2",
-     name: "Neural Network",
-     description: description(),
-     package: package(),
-     source_url: "https://github.com/kblake/neural_network_elixir",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :neural_network,
+      version: "0.1.4",
+      elixir: "~> 1.2",
+      name: "Neural Network",
+      description: description(),
+      package: package(),
+      source_url: "https://github.com/kblake/neural_network_elixir",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
+    ]
   end
 
   def application do
-    [applications: [:logger],
-     mod: {NeuralNetwork, []}]
+    [applications: [:logger], mod: {NeuralNetwork, []}]
   end
 
   defp description do

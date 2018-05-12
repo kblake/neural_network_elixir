@@ -6,7 +6,8 @@ defmodule NeuralNetwork.Connection do
   """
   alias NeuralNetwork.{Connection}
 
-  defstruct pid: nil, source_pid: nil, target_pid: nil, weight: 0.4 # make weight random at some point
+  # make weight random at some point
+  defstruct pid: nil, source_pid: nil, target_pid: nil, weight: 0.4
 
   def start_link(connection_fields \\ %{}) do
     {:ok, pid} = Agent.start_link(fn -> %Connection{} end)
@@ -18,11 +19,11 @@ defmodule NeuralNetwork.Connection do
   @doc """
   Return connection by PID
   """
-  def get(pid), do: Agent.get(pid, &(&1))
+  def get(pid), do: Agent.get(pid, & &1)
 
   def update(pid, fields) do
     Agent.update(pid, fn connection -> Map.merge(connection, fields) end)
-    Agent.update(pid, &(Map.merge(&1, fields)))
+    Agent.update(pid, &Map.merge(&1, fields))
   end
 
   @doc """

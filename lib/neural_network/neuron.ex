@@ -34,13 +34,13 @@ defmodule NeuralNetwork.Neuron do
       2
   """
   def update(pid, neuron_fields) do
-    Agent.update(pid, &(Map.merge(&1, neuron_fields)))
+    Agent.update(pid, &Map.merge(&1, neuron_fields))
   end
 
   @doc """
   Lookup and return a neuron
   """
-  def get(pid), do: Agent.get(pid, &(&1))
+  def get(pid), do: Agent.get(pid, & &1)
 
   @doc """
   Connect two neurons
@@ -68,7 +68,7 @@ defmodule NeuralNetwork.Neuron do
   end
 
   defp sumf do
-    fn(connection_pid, sum) ->
+    fn connection_pid, sum ->
       connection = Connection.get(connection_pid)
       sum + get(connection.source_pid).output * connection.weight
     end
@@ -81,14 +81,16 @@ defmodule NeuralNetwork.Neuron do
   Other neurons: will squash their input value to compute output
   """
   def activate(neuron_pid, value \\ nil) do
-    neuron = get(neuron_pid) # just to make sure we are not getting a stale agent
+    # just to make sure we are not getting a stale agent
+    neuron = get(neuron_pid)
 
-    fields = if neuron.bias? do
-      %{output: 1}
-    else
-      input = value || Enum.reduce(neuron.incoming, 0, sumf())
-      %{input: input, output: activation_function(input)}
-    end
+    fields =
+      if neuron.bias? do
+        %{output: 1}
+      else
+        input = value || Enum.reduce(neuron.incoming, 0, sumf())
+        %{input: input, output: activation_function(input)}
+      end
 
     neuron_pid |> update(fields)
   end
@@ -98,7 +100,8 @@ defmodule NeuralNetwork.Neuron do
   Set the neuron's delta value.
   """
   def train(neuron_pid, target_output \\ nil) do
-    neuron = get(neuron_pid) # just to make sure we are not getting a stale agent
+    # just to make sure we are not getting a stale agent
+    neuron = get(neuron_pid)
 
     if !neuron.bias? && !input_neuron?(neuron) do
       if output_neuron?(neuron) do
@@ -124,10 +127,11 @@ defmodule NeuralNetwork.Neuron do
   end
 
   defp calculate_outgoing_delta(neuron) do
-    delta = Enum.reduce(neuron.outgoing, 0, fn connection_pid, sum ->
-      connection = Connection.get(connection_pid)
-      sum + connection.weight * get(connection.target_pid).delta
-    end)
+    delta =
+      Enum.reduce(neuron.outgoing, 0, fn connection_pid, sum ->
+        connection = Connection.get(connection_pid)
+        sum + connection.weight * get(connection.target_pid).delta
+      end)
 
     neuron.pid |> update(%{delta: delta})
   end

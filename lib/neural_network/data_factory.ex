@@ -11,48 +11,48 @@ defmodule NeuralNetwork.DataFactory do
 
   def gates do
     %{
-      or:          or_gate(),
-      and:         and_gate(),
-      xor:         xor_gate(),
-      nand:        nand_gate(),
+      or: or_gate(),
+      and: and_gate(),
+      xor: xor_gate(),
+      nand: nand_gate(),
       iris_flower: iris_flower_gate()
     }
   end
 
   def gate_names do
-    gates() |> Map.keys |> Enum.join(", ")
+    gates() |> Map.keys() |> Enum.join(", ")
   end
 
   def gate_exists?(name) do
-    Map.has_key? gates(), String.to_atom(name)
+    Map.has_key?(gates(), String.to_atom(name))
   end
 
   @or_gate [
-    %{input: [0,0], output: [0]},
-    %{input: [0,1], output: [1]},
-    %{input: [1,0], output: [1]},
-    %{input: [1,1], output: [1]}
+    %{input: [0, 0], output: [0]},
+    %{input: [0, 1], output: [1]},
+    %{input: [1, 0], output: [1]},
+    %{input: [1, 1], output: [1]}
   ]
 
   @and_gate [
-    %{input: [0,0], output: [0]},
-    %{input: [0,1], output: [0]},
-    %{input: [1,0], output: [0]},
-    %{input: [1,1], output: [1]}
+    %{input: [0, 0], output: [0]},
+    %{input: [0, 1], output: [0]},
+    %{input: [1, 0], output: [0]},
+    %{input: [1, 1], output: [1]}
   ]
 
   @xor_gate [
-    %{input: [0,0], output: [0]},
-    %{input: [0,1], output: [1]},
-    %{input: [1,0], output: [1]},
-    %{input: [1,1], output: [0]}
+    %{input: [0, 0], output: [0]},
+    %{input: [0, 1], output: [1]},
+    %{input: [1, 0], output: [1]},
+    %{input: [1, 1], output: [0]}
   ]
 
   @nand_gate [
-    %{input: [0,0], output: [1]},
-    %{input: [0,1], output: [1]},
-    %{input: [1,0], output: [1]},
-    %{input: [1,1], output: [0]}
+    %{input: [0, 0], output: [1]},
+    %{input: [0, 1], output: [1]},
+    %{input: [1, 0], output: [1]},
+    %{input: [1, 1], output: [0]}
   ]
 
   @doc """
@@ -213,9 +213,9 @@ defmodule NeuralNetwork.DataFactory do
     %{input: [5.9, 3.0, 5.1, 1.8], output: [0, 0, 1]}
   ]
 
-  def or_gate,          do: @or_gate
-  def and_gate,         do: @and_gate
-  def xor_gate,         do: @xor_gate
-  def nand_gate,        do: @nand_gate
+  def or_gate, do: @or_gate
+  def and_gate, do: @and_gate
+  def xor_gate, do: @xor_gate
+  def nand_gate, do: @nand_gate
   def iris_flower_gate, do: @iris_flower
 end
