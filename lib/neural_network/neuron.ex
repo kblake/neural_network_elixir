@@ -5,7 +5,7 @@ defmodule NeuralNetwork.Neuron do
   of its outgoing connections to other neurons.
   """
 
-  alias NeuralNetwork.{Neuron, Connection}
+  alias NeuralNetwork.{Connection, Neuron}
 
   defstruct pid: nil, input: 0, output: 0, incoming: [], outgoing: [], bias?: false, delta: 0
 

@@ -3,7 +3,7 @@ defmodule NeuralNetwork.Network do
   Contains layers which makes up a matrix of neurons.
   """
 
-  alias NeuralNetwork.{Neuron, Layer, Network}
+  alias NeuralNetwork.{Layer, Network, Neuron}
 
   defstruct pid: nil, input_layer: nil, hidden_layers: [], output_layer: nil, error: 0
 

@@ -1,5 +1,5 @@
 defmodule NeuralNetwork.NeuronTest do
-  alias NeuralNetwork.{Neuron, Connection}
+  alias NeuralNetwork.{Connection, Neuron}
   use ExUnit.Case
   doctest Neuron
 

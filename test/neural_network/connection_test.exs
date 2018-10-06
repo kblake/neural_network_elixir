@@ -2,7 +2,7 @@ defmodule NeuralNetwork.ConnectionTest do
   use ExUnit.Case
   doctest NeuralNetwork.Connection
 
-  alias NeuralNetwork.{Neuron, Connection}
+  alias NeuralNetwork.{Connection, Neuron}
 
   test "has default values using an agent" do
     {:ok, pid} = Connection.start_link()

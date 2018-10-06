@@ -4,7 +4,7 @@ defmodule NeuralNetwork.Layer do
   A network is made up layers (which are made up of neurons).
   """
 
-  alias NeuralNetwork.{Neuron, Layer}
+  alias NeuralNetwork.{Layer, Neuron}
 
   defstruct pid: nil, neurons: []
 
