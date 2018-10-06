@@ -13,21 +13,21 @@ defmodule NeuralNetwork.ConnectionTest do
   end
 
   test "create new connection with custom values" do
-    {:ok, pidA} = Neuron.start_link()
-    {:ok, pidB} = Neuron.start_link()
-    {:ok, connection_pid} = Connection.start_link(%{source_pid: pidA, target_pid: pidB})
+    {:ok, pid_a} = Neuron.start_link()
+    {:ok, pid_b} = Neuron.start_link()
+    {:ok, connection_pid} = Connection.start_link(%{source_pid: pid_a, target_pid: pid_b})
     connection = Connection.get(connection_pid)
 
-    assert connection.source_pid == pidA
-    assert connection.target_pid == pidB
+    assert connection.source_pid == pid_a
+    assert connection.target_pid == pid_b
     assert connection.weight == 0.4
   end
 
   test "update connection values" do
     {:ok, connection_pid} = Connection.start_link()
-    {:ok, pidA} = Neuron.start_link(%{input: 10})
-    {:ok, pidB} = Neuron.start_link(%{input: 5})
-    Connection.update(connection_pid, %{source_pid: pidA, target_pid: pidB})
+    {:ok, pid_a} = Neuron.start_link(%{input: 10})
+    {:ok, pid_b} = Neuron.start_link(%{input: 5})
+    Connection.update(connection_pid, %{source_pid: pid_a, target_pid: pid_b})
 
     connection = Connection.get(connection_pid)
     assert Neuron.get(connection.source_pid).input == 10
@@ -35,13 +35,13 @@ defmodule NeuralNetwork.ConnectionTest do
   end
 
   test "create a connection for two neurons" do
-    {:ok, pidA} = Neuron.start_link()
-    {:ok, pidB} = Neuron.start_link()
+    {:ok, pid_a} = Neuron.start_link()
+    {:ok, pid_b} = Neuron.start_link()
 
-    {:ok, connection_pid} = Connection.connection_for(pidA, pidB)
+    {:ok, connection_pid} = Connection.connection_for(pid_a, pid_b)
     connection = Connection.get(connection_pid)
 
-    assert connection.source_pid == pidA
-    assert connection.target_pid == pidB
+    assert connection.source_pid == pid_a
+    assert connection.target_pid == pid_b
   end
 end

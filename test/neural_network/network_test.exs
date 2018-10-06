@@ -31,20 +31,20 @@ defmodule NeuralNetwork.NetworkTest do
   end
 
   test "update layers" do
-    {:ok, pidA} = Network.start_link([3, 2, 5])
-    {:ok, pidB} = Network.start_link([1, 3, 2])
+    {:ok, pid_a} = Network.start_link([3, 2, 5])
+    {:ok, pid_b} = Network.start_link([1, 3, 2])
 
     layers = %{
-      input_layer: Network.get(pidB).input_layer,
-      output_layer: Network.get(pidB).output_layer,
-      hidden_layers: Network.get(pidB).hidden_layers
+      input_layer: Network.get(pid_b).input_layer,
+      output_layer: Network.get(pid_b).output_layer,
+      hidden_layers: Network.get(pid_b).hidden_layers
     }
 
-    Network.update(pidA, layers)
+    Network.update(pid_a, layers)
 
-    assert length((Network.get(pidA).input_layer |> Layer.get()).neurons) == 2
-    assert length((Network.get(pidA).output_layer |> Layer.get()).neurons) == 2
-    hidden_neurons_one = (Network.get(pidA).hidden_layers |> List.first() |> Layer.get()).neurons
+    assert length((Network.get(pid_a).input_layer |> Layer.get()).neurons) == 2
+    assert length((Network.get(pid_a).output_layer |> Layer.get()).neurons) == 2
+    hidden_neurons_one = (Network.get(pid_a).hidden_layers |> List.first() |> Layer.get()).neurons
     assert length(hidden_neurons_one) == 4
   end
 end

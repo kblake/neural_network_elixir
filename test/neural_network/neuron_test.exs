@@ -62,13 +62,13 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test ".connect" do
-    {:ok, pidA} = Neuron.start_link()
-    {:ok, pidB} = Neuron.start_link()
+    {:ok, pid_a} = Neuron.start_link()
+    {:ok, pid_b} = Neuron.start_link()
 
-    Neuron.connect(pidA, pidB)
+    Neuron.connect(pid_a, pid_b)
 
-    assert length(Neuron.get(pidA).outgoing) == 1
-    assert length(Neuron.get(pidB).incoming) == 1
+    assert length(Neuron.get(pid_a).outgoing) == 1
+    assert length(Neuron.get(pid_b).incoming) == 1
   end
 
   test ".activation_function" do
@@ -88,15 +88,15 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test ".activate with incoming connections" do
-    {:ok, pidX} = Neuron.start_link(%{output: 2})
-    {:ok, pidY} = Neuron.start_link(%{output: 5})
+    {:ok, pid_x} = Neuron.start_link(%{output: 2})
+    {:ok, pid_y} = Neuron.start_link(%{output: 5})
 
-    {:ok, connection_one_pid} = Connection.start_link(%{source_pid: pidX})
-    {:ok, connection_two_pid} = Connection.start_link(%{source_pid: pidY})
+    {:ok, connection_one_pid} = Connection.start_link(%{source_pid: pid_x})
+    {:ok, connection_two_pid} = Connection.start_link(%{source_pid: pid_y})
 
-    {:ok, pidA} = Neuron.start_link(%{incoming: [connection_one_pid, connection_two_pid]})
-    pidA |> Neuron.activate()
-    assert Neuron.get(pidA).output == 0.9426758241011313
+    {:ok, pid_a} = Neuron.start_link(%{incoming: [connection_one_pid, connection_two_pid]})
+    pid_a |> Neuron.activate()
+    assert Neuron.get(pid_a).output == 0.9426758241011313
   end
 
   test ".activate a bias neuron" do
@@ -106,36 +106,36 @@ defmodule NeuralNetwork.NeuronTest do
   end
 
   test "connect and activate two neurons" do
-    {:ok, pidA} = Neuron.start_link()
-    {:ok, pidB} = Neuron.start_link()
-    Neuron.connect(pidA, pidB)
+    {:ok, pid_a} = Neuron.start_link()
+    {:ok, pid_b} = Neuron.start_link()
+    Neuron.connect(pid_a, pid_b)
 
-    pidA |> Neuron.activate(2)
-    pidB |> Neuron.activate()
+    pid_a |> Neuron.activate(2)
+    pid_b |> Neuron.activate()
 
-    neuronA = Neuron.get(pidA)
-    neuronB = Neuron.get(pidB)
+    neuron_a = Neuron.get(pid_a)
+    neuron_b = Neuron.get(pid_b)
 
-    assert neuronA.input == 2
-    assert neuronA.output == 0.8807970779778823
-    assert neuronB.input == 0.3523188311911529
-    assert neuronB.output == 0.5871797762705651
+    assert neuron_a.input == 2
+    assert neuron_a.output == 0.8807970779778823
+    assert neuron_b.input == 0.3523188311911529
+    assert neuron_b.output == 0.5871797762705651
   end
 
   test "train: delta should get smaller (learnin yo!)" do
-    {:ok, pidA} = Neuron.start_link()
-    {:ok, pidB} = Neuron.start_link()
-    Neuron.connect(pidA, pidB)
+    {:ok, pid_a} = Neuron.start_link()
+    {:ok, pid_b} = Neuron.start_link()
+    Neuron.connect(pid_a, pid_b)
 
     deltas =
       Enum.map(1..100, fn _ ->
-        pidA |> Neuron.activate(2)
-        pidB |> Neuron.activate()
+        pid_a |> Neuron.activate(2)
+        pid_b |> Neuron.activate()
 
-        pidB |> Neuron.train(1)
-        pidA |> Neuron.train()
+        pid_b |> Neuron.train(1)
+        pid_a |> Neuron.train()
 
-        Neuron.get(pidB).delta
+        Neuron.get(pid_b).delta
       end)
 
     deltas

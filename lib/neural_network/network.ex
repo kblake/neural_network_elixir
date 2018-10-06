@@ -93,7 +93,7 @@ defmodule NeuralNetwork.Network do
   def activate(network, input_values) do
     network.input_layer |> Layer.activate(input_values)
 
-    Enum.map(network.hidden_layers, fn hidden_layer ->
+    Enum.each(network.hidden_layers, fn hidden_layer ->
       hidden_layer |> Layer.activate()
     end)
 
@@ -113,7 +113,7 @@ defmodule NeuralNetwork.Network do
     network.hidden_layers
     |> Enum.reverse()
     |> Enum.each(fn layer_pid ->
-      Layer.get(layer_pid) |> Layer.train(target_outputs)
+      layer_pid |>Layer.get |> Layer.train(target_outputs)
     end)
 
     network.input_layer |> Layer.get() |> Layer.train(target_outputs)
