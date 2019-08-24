@@ -4,6 +4,7 @@ A neural network made up of layers of neurons connected to each other to form a 
 
 After cloning:
 
+    $ mix deps.get
     $ mix compile
 
 ## Usage
