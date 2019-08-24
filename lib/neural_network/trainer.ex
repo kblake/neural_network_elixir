@@ -15,10 +15,14 @@ defmodule NeuralNetwork.Trainer do
         Enum.reduce(data, 0, fn sample, sum ->
           # sum weighted inputs to produce output value of network
           # that output will be compared with target output to find the delta
-          network_pid |> Network.get() |> Network.activate(sample.input)
+          network_pid
+          |> Network.get()
+          |> Network.activate(sample.input)
 
           # Backpropagation
-          network_pid |> Network.get() |> Network.train(sample.output)
+          network_pid
+          |> Network.get()
+          |> Network.train(sample.output)
 
           sum + Network.get(network_pid).error / data_length
         end)

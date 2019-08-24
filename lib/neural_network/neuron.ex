@@ -7,7 +7,13 @@ defmodule NeuralNetwork.Neuron do
 
   alias NeuralNetwork.{Connection, Neuron}
 
-  defstruct pid: nil, input: 0, output: 0, incoming: [], outgoing: [], bias?: false, delta: 0
+  defstruct pid: nil,
+            input: 0,
+            output: 0,
+            incoming: [],
+            outgoing: [],
+            bias?: false,
+            delta: 0
 
   @learning_rate 0.3
 

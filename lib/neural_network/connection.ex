@@ -7,7 +7,10 @@ defmodule NeuralNetwork.Connection do
   alias NeuralNetwork.{Connection}
 
   # make weight random at some point
-  defstruct pid: nil, source_pid: nil, target_pid: nil, weight: 0.4
+  defstruct pid: nil,
+            source_pid: nil,
+            target_pid: nil,
+            weight: 0.4
 
   def start_link(connection_fields \\ %{}) do
     {:ok, pid} = Agent.start_link(fn -> %Connection{} end)
