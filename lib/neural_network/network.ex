@@ -113,7 +113,7 @@ defmodule NeuralNetwork.Network do
     network.hidden_layers
     |> Enum.reverse()
     |> Enum.each(fn layer_pid ->
-      layer_pid |>Layer.get |> Layer.train(target_outputs)
+      layer_pid |> Layer.get() |> Layer.train(target_outputs)
     end)
 
     network.input_layer |> Layer.get() |> Layer.train(target_outputs)

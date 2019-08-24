@@ -19,7 +19,7 @@ defmodule NeuralNetwork.LayerTest do
   test "create new layer with empty neuron list when size is negative" do
     {:ok, pid} = Layer.start_link(%{neuron_size: -3})
     layer = Layer.get(pid)
-    assert layer.neurons |> Enum.empty?
+    assert layer.neurons |> Enum.empty?()
   end
 
   test "connect layers: no outgoing or incoming neurons connected" do
@@ -27,13 +27,13 @@ defmodule NeuralNetwork.LayerTest do
     {:ok, output_layer_pid} = Layer.start_link(%{neuron_size: 2})
 
     for neuron <- Layer.get(input_layer_pid).neurons do
-      assert Neuron.get(neuron).outgoing |> Enum.empty?
-      assert Neuron.get(neuron).incoming |> Enum.empty?
+      assert Neuron.get(neuron).outgoing |> Enum.empty?()
+      assert Neuron.get(neuron).incoming |> Enum.empty?()
     end
 
     for neuron <- Layer.get(output_layer_pid).neurons do
-      assert Neuron.get(neuron).outgoing |> Enum.empty?
-      assert Neuron.get(neuron).incoming |> Enum.empty?
+      assert Neuron.get(neuron).outgoing |> Enum.empty?()
+      assert Neuron.get(neuron).incoming |> Enum.empty?()
     end
   end
 
@@ -44,7 +44,7 @@ defmodule NeuralNetwork.LayerTest do
 
     for neuron <- Layer.get(input_layer_pid).neurons do
       assert length(Neuron.get(neuron).outgoing) == 2
-      assert Neuron.get(neuron).incoming |> Enum.empty?
+      assert Neuron.get(neuron).incoming |> Enum.empty?()
 
       connection_target_ids =
         Enum.map(Neuron.get(neuron).outgoing, fn connection_pid ->
@@ -69,7 +69,7 @@ defmodule NeuralNetwork.LayerTest do
         end)
 
       assert Enum.any?(source_neurons, fn source_neuron -> source_neuron.bias? end)
-      assert Neuron.get(neuron).outgoing |> Enum.empty?
+      assert Neuron.get(neuron).outgoing |> Enum.empty?()
 
       assert Enum.map(Neuron.get(neuron).incoming, fn connection_pid ->
                Connection.get(connection_pid).source_pid
