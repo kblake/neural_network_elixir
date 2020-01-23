@@ -97,7 +97,7 @@ defmodule NeuralNetwork.Layer do
   @doc """
   Activate all neurons in the layer with a list of values.
   """
-  def activate(layer_pid, values \\ nil) do
+  def activate(layer_pid, activation_type, values \\ nil) do
     layer = get(layer_pid)
     # coerce to [] if nil
     values = List.wrap(values)
@@ -106,7 +106,7 @@ defmodule NeuralNetwork.Layer do
     |> Stream.with_index()
     |> Enum.each(fn tuple ->
       {neuron, index} = tuple
-      neuron |> Neuron.activate(Enum.at(values, index))
+      neuron |> Neuron.activate(activation_type, Enum.at(values, index))
     end)
   end
 end
