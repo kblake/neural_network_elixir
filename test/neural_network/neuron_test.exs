@@ -77,13 +77,13 @@ defmodule NeuralNetwork.NeuronTest do
 
   test ".activate with specified value" do
     {:ok, pid} = Neuron.start_link()
-    pid |> Neuron.activate(1)
+    pid |> Neuron.activate(:sigmoid, 1)
     assert Neuron.get(pid).output == 0.7310585786300049
   end
 
   test ".activate with no incoming connections" do
     {:ok, pid} = Neuron.start_link()
-    pid |> Neuron.activate()
+    pid |> Neuron.activate(:sigmoid)
     assert Neuron.get(pid).output == 0.5
   end
 
@@ -95,13 +95,13 @@ defmodule NeuralNetwork.NeuronTest do
     {:ok, connection_two_pid} = Connection.start_link(%{source_pid: pid_y})
 
     {:ok, pid_a} = Neuron.start_link(%{incoming: [connection_one_pid, connection_two_pid]})
-    pid_a |> Neuron.activate()
+    pid_a |> Neuron.activate(:sigmoid)
     assert Neuron.get(pid_a).output == 0.9426758241011313
   end
 
   test ".activate a bias neuron" do
     {:ok, pid} = Neuron.start_link(%{bias?: true})
-    pid |> Neuron.activate()
+    pid |> Neuron.activate(:sigmoid)
     assert Neuron.get(pid).output == 1
   end
 
@@ -110,8 +110,8 @@ defmodule NeuralNetwork.NeuronTest do
     {:ok, pid_b} = Neuron.start_link()
     Neuron.connect(pid_a, pid_b)
 
-    pid_a |> Neuron.activate(2)
-    pid_b |> Neuron.activate()
+    pid_a |> Neuron.activate(:sigmoid, 2)
+    pid_b |> Neuron.activate(:sigmoid)
 
     neuron_a = Neuron.get(pid_a)
     neuron_b = Neuron.get(pid_b)
@@ -129,8 +129,8 @@ defmodule NeuralNetwork.NeuronTest do
 
     deltas =
       Enum.map(1..100, fn _ ->
-        pid_a |> Neuron.activate(2)
-        pid_b |> Neuron.activate()
+        pid_a |> Neuron.activate(:sigmoid, 2)
+        pid_b |> Neuron.activate(:sigmoid)
 
         pid_b |> Neuron.train(1)
         pid_a |> Neuron.train()

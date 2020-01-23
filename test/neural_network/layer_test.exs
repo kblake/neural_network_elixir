@@ -79,7 +79,7 @@ defmodule NeuralNetwork.LayerTest do
 
   test "activate a layer: when values are nil" do
     {:ok, pid} = Layer.start_link(%{neuron_size: 2})
-    Layer.activate(pid)
+    Layer.activate(pid, :sigmoid)
 
     for neuron <- Layer.get(pid).neurons do
       assert Neuron.get(neuron).output == 0.5
@@ -88,7 +88,7 @@ defmodule NeuralNetwork.LayerTest do
 
   test "activate a layer: with values" do
     {:ok, pid} = Layer.start_link(%{neuron_size: 2})
-    pid |> Layer.activate([1, 2])
+    pid |> Layer.activate(:sigmoid, [1, 2])
 
     for neuron_pid <- Layer.get(pid).neurons do
       neuron = Neuron.get(neuron_pid)

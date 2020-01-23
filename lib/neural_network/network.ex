@@ -95,13 +95,13 @@ defmodule NeuralNetwork.Network do
   Activate the network given list of input values.
   """
   def activate(network, input_values) do
-    network.input_layer |> Layer.activate(input_values)
+    network.input_layer |> Layer.activate(:sigmoid, input_values)
 
     Enum.each(network.hidden_layers, fn hidden_layer ->
-      hidden_layer |> Layer.activate()
+      hidden_layer |> Layer.activate(:sigmoid)
     end)
 
-    network.output_layer |> Layer.activate()
+    network.output_layer |> Layer.activate(:sigmoid)
   end
 
   @doc """

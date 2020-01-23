@@ -17,7 +17,7 @@ defmodule NeuralNetwork.Trainer do
           # that output will be compared with target output to find the delta
           network_pid
           |> Network.get()
-          |> Network.activate(sample.input)
+          |> Network.activate(:sigmoid, sample.input)
 
           # Backpropagation
           network_pid
