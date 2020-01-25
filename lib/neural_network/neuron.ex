@@ -61,18 +61,6 @@ defmodule NeuralNetwork.Neuron do
     |> update(%{incoming: get(target_neuron_pid).incoming ++ [connection_pid]})
   end
 
-  @doc """
-  Sigmoid function. See more at: https://en.wikipedia.org/wiki/Sigmoid_function
-
-  ## Example
-
-      iex> NeuralNetwork.Neuron.activation_function(1)
-      0.7310585786300049
-  """
-  def activation_function(input) do
-    1 / (1 + :math.exp(-input))
-  end
-
   defp sumf do
     fn connection_pid, sum ->
       connection = Connection.get(connection_pid)
@@ -86,7 +74,7 @@ defmodule NeuralNetwork.Neuron do
   Bias neuron: output is always 1.
   Other neurons: will squash their input value to compute output
   """
-  def activate(neuron_pid, activation_type, value \\ nil) do
+  def activate(neuron_pid, activation, value \\ nil) do
     # just to make sure we are not getting a stale agent
     neuron = get(neuron_pid)
 
@@ -95,7 +83,7 @@ defmodule NeuralNetwork.Neuron do
         %{output: 1}
       else
         input = value || Enum.reduce(neuron.incoming, 0, sumf())
-        %{input: input, output: Activation.calculate_output(input, activation_type)}
+        %{input: input, output: Activation.calculate_output(activation, input)}
       end
 
     neuron_pid |> update(fields)

@@ -71,10 +71,6 @@ defmodule NeuralNetwork.NeuronTest do
     assert length(Neuron.get(pid_b).incoming) == 1
   end
 
-  test ".activation_function" do
-    assert Neuron.activation_function(1) == 0.7310585786300049
-  end
-
   test ".activate with specified value" do
     {:ok, pid} = Neuron.start_link()
     pid |> Neuron.activate(:sigmoid, 1)

@@ -5,9 +5,11 @@ defmodule NeuralNetwork.Activation do
 
   @doc """
   """
-  def calculate_output(input, :softmax), do: softmax(input)
-  def calculate_output(input, :sigmoid), do: sigmoid(input)
-  def calculate_output(input, :relu), do: relu(input)
+  def calculate_output(:softmax, input), do: softmax(input)
+  def calculate_output(:sigmoid, input), do: sigmoid(input)
+  def calculate_output(:relu, input), do: relu(input)
+  def calculate_output(:identity, input), do: input
+  def calculate_output(:tanh, input), do: tanh(input)
 
   defp softmax([input]), do: softmax(input)
   defp softmax(input) do
@@ -24,4 +26,6 @@ defmodule NeuralNetwork.Activation do
 
   defp relu(input) when input <= 0, do: 0
   defp relu(input) when input > 0, do: input
+
+  defp tanh(input), do: :math.tanh(input)
 end

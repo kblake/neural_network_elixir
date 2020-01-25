@@ -9,7 +9,10 @@ defmodule NeuralNetwork.Network do
             input_layer: nil,
             hidden_layers: [],
             output_layer: nil,
+            activation: nil,
             error: 0
+
+  @options %{activation: :relu}
 
   @doc """
   Pass in layer sizes which will generate the layers for the network.
@@ -17,7 +20,7 @@ defmodule NeuralNetwork.Network do
   The last number represents the number of neurons in the output layer.
   [Optionally] The middle numbers represent the number of neurons for hidden layers.
   """
-  def start_link(layer_sizes \\ []) do
+  def start_link(layer_sizes \\ [], options \\ @options) do
     {:ok, pid} = Agent.start_link(fn -> %Network{} end)
 
     layers =
@@ -29,6 +32,7 @@ defmodule NeuralNetwork.Network do
 
     pid |> update(layers)
     pid |> connect_layers
+    pid |> update_activation(options.activation)
     {:ok, pid}
   end
 
@@ -41,8 +45,20 @@ defmodule NeuralNetwork.Network do
   Update the network layers.
   """
   def update(pid, fields) do
-    # preserve the pid!!
     fields = Map.merge(fields, %{pid: pid})
+    Agent.update(pid, &Map.merge(&1, fields))
+  end
+
+  @doc """
+  Activation function for the hidden layer.
+
+  ‘identity’, no-op activation, useful to implement linear bottleneck, returns f(x) = x
+  ‘sigmoid’, the logistic sigmoid function, returns f(x) = 1 / (1 + exp(-x)).
+  ‘tanh’, the hyperbolic tan function, returns f(x) = tanh(x).
+  ‘relu’, the rectified linear unit function, returns f(x) = max(0, x)
+  """
+  def update_activation(pid, activation) do
+    fields = Map.merge(pid |> Network.get, %{activation: activation})
     Agent.update(pid, &Map.merge(&1, fields))
   end
 
@@ -95,10 +111,10 @@ defmodule NeuralNetwork.Network do
   Activate the network given list of input values.
   """
   def activate(network, input_values) do
-    network.input_layer |> Layer.activate(:sigmoid, input_values)
+    network.input_layer |> Layer.activate(network.activation, input_values)
 
     Enum.each(network.hidden_layers, fn hidden_layer ->
-      hidden_layer |> Layer.activate(:sigmoid)
+      hidden_layer |> Layer.activate(network.activation)
     end)
 
     network.output_layer |> Layer.activate(:sigmoid)
