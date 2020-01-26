@@ -109,4 +109,9 @@ defmodule NeuralNetwork.Layer do
       neuron |> Neuron.activate(activation, Enum.at(values, index))
     end)
   end
+
+  def neurons_output(layer) do
+    layer.neurons
+    |> Enum.map(&(Neuron.get(&1).output))
+  end
 end

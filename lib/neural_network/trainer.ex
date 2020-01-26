@@ -31,6 +31,7 @@ defmodule NeuralNetwork.Trainer do
         IO.puts("Epoch: #{epoch}   Error: #{unexponential(average_error)}")
       end
     end
+    network_pid
   end
 
   defp unexponential(average_error) do
