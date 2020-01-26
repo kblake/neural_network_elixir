@@ -61,11 +61,11 @@ Run tests
 
 
 ### Run Console
-`alias NeuralNetwork.{DataFactory, Network, Trainer, Thinker}`
-`{:ok, network_pid} = Network.start_link([2, 1], %{activation: :relu})`
-`data = DataFactory.gate_for("or")`
-`Trainer.train(network_pid, data, %{epochs: 10_000, log_freqs: 1000})`
-`Thinker.predict(network_pid, [1,1])`
+    alias NeuralNetwork.{DataFactory, Network, Trainer, Thinker}
+    {:ok, network_pid} = Network.start_link([2, 1], %{activation: :relu})
+    data = DataFactory.gate_for("or")
+    Trainer.train(network_pid, data, %{epochs: 10_000, log_freqs: 1000})
+    Thinker.predict(network_pid, [1,1])
 
 
 ### Huge props
