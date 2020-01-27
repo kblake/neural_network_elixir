@@ -1,10 +1,13 @@
+@moduledoc """
+Mixfile to define project dependencies
+"""
 defmodule NeuralNetwork.Mixfile do
   use Mix.Project
 
   def project do
     [
       app: :neural_network,
-      version: "0.1.4",
+      version: "0.2.0",
       elixir: "~> 1.8",
       name: "Neural Network",
       description: description(),
