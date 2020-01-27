@@ -1,14 +1,11 @@
-@moduledoc """
-Mixfile to define project dependencies
-"""
-defmodule NeuralNetwork.Mixfile do
+defmodule NeuralNetwork.MixProject do
   use Mix.Project
 
-  def project do
+  def project() do
     [
       app: :neural_network,
       version: "0.2.0",
-      elixir: "~> 1.9.4",
+      elixir: "~> 1.10",
       name: "Neural Network",
       description: description(),
       package: package(),
@@ -19,17 +16,17 @@ defmodule NeuralNetwork.Mixfile do
     ]
   end
 
-  def application do
+  def application() do
     [applications: [:logger], mod: {NeuralNetwork, []}]
   end
 
-  defp description do
+  defp description() do
     """
     A neural network made up of layers of neurons connected to each other to form a relationship allowing it to learn.
     """
   end
 
-  defp package do
+  defp package() do
     [
       maintainers: ["Karmen Blake"],
       licenses: ["MIT"],
@@ -39,7 +36,7 @@ defmodule NeuralNetwork.Mixfile do
     ]
   end
 
-  defp deps do
+  defp deps() do
     [
       {:earmark, "~> 1.2", only: :dev},
       {:ex_doc, "~> 0.19", only: :dev},
