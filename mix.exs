@@ -8,7 +8,7 @@ defmodule NeuralNetwork.Mixfile do
     [
       app: :neural_network,
       version: "0.2.0",
-      elixir: "~> 1.8",
+      elixir: "~> 1.9.4",
       name: "Neural Network",
       description: description(),
       package: package(),
