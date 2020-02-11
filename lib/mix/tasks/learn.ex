@@ -5,7 +5,7 @@ defmodule Mix.Tasks.Learn do
 
   use Mix.Task
 
-  alias NeuralNetwork.{DataFactory, Network, Trainer}
+  alias NeuralNetwork.{DataFactory, Network}
 
   @shortdoc "Run the neural network app"
 
@@ -23,7 +23,7 @@ defmodule Mix.Tasks.Learn do
         "#{String.upcase(gate_name)} gate learning *********************************************"
       )
 
-      Trainer.train(network_pid, data, %{epochs: epoch_count, log_freqs: 1000})
+      Network.fit(network_pid, data, %{epochs: epoch_count, log_freqs: 1000})
       IO.puts("**************************************************************")
     else
       IO.puts(
