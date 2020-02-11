@@ -125,9 +125,10 @@ defmodule NeuralNetwork.Network do
   """
   def predict(network_pid, input_data) do
     network_pid |> forward(input_data)
-    with output_data <- get_output_data(network_pid) do
-      network_pid |> apply_softmax(output_data)
-    end
+
+    network_pid
+    |> get_output_data
+    |> apply_softmax
   end
 
   @doc """
@@ -144,7 +145,7 @@ defmodule NeuralNetwork.Network do
   @doc """
   Apply softmax function.
   """
-  defp apply_softmax(network_pid, input_data) do
+  defp apply_softmax(input_data) do
     Activation.calculate_output(:softmax, input_data)
   end
 
