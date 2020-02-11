@@ -128,6 +128,9 @@ defmodule NeuralNetwork.Network do
     network_pid |> get_output_data()
   end
 
+  @doc """
+  Returns values from output layer.
+  """
   defp get_output_data(network_pid) do
     with model <- network_pid |> Network.model() do
       model.output_layer
