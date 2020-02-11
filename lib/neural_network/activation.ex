@@ -12,7 +12,7 @@ defmodule NeuralNetwork.Activation do
   def calculate_output(:tanh, input), do: tanh(input)
 
   defp softmax([input]), do: softmax(input)
-  defp softmax(input) when is_list(input) do
+  defp softmax(input) when is_list(input) and length(input) > 1 do
     c = Enum.max(input)
     x1 = Enum.map(input, fn(y) -> y-c end)
     sum = listsum(x1)

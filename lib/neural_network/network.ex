@@ -3,7 +3,7 @@ defmodule NeuralNetwork.Network do
   Contains layers which makes up a matrix of neurons.
   """
 
-  alias NeuralNetwork.{Layer, Network, Neuron, LossFunction}
+  alias NeuralNetwork.{Layer, Network, Neuron, LossFunction, Activation}
 
   defstruct pid: nil,
             input_layer: nil,
@@ -125,7 +125,9 @@ defmodule NeuralNetwork.Network do
   """
   def predict(network_pid, input_data) do
     network_pid |> forward(input_data)
-    network_pid |> get_output_data()
+    with output_data <- get_output_data(network_pid) do
+      network_pid |> apply_softmax(output_data)
+    end
   end
 
   @doc """
@@ -137,6 +139,13 @@ defmodule NeuralNetwork.Network do
       |> Layer.get()
       |> Layer.neurons_output()
     end
+  end
+
+  @doc """
+  Apply softmax function.
+  """
+  defp apply_softmax(network_pid, input_data) do
+    Activation.calculate_output(:softmax, input_data)
   end
 
   @doc """
